@@ -1,0 +1,59 @@
+-- Crear base de datos
+CREATE DATABASE Estancia CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE Estancia;
+
+-- Tabla: usuarios (familiares, admins)
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    correo VARCHAR(100) NOT NULL UNIQUE,
+    nip VARCHAR(10) NOT NULL,
+    rol ENUM('familiar', 'admin') DEFAULT 'familiar'
+);
+
+-- Tabla: medicos
+CREATE TABLE medicos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    especialidad VARCHAR(100) NOT NULL,
+    correo VARCHAR(100),
+    telefono VARCHAR(20)
+);
+
+-- Tabla: expedientes
+CREATE TABLE expedientes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    paciente_nombre VARCHAR(100) NOT NULL,
+    fecha_ultima_revision DATE,
+    notas TEXT
+);
+
+-- Tabla: notificaciones médicas
+CREATE TABLE notificaciones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(100) NOT NULL,
+    mensaje TEXT NOT NULL,
+    fecha DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabla: cuidadores
+CREATE TABLE cuidadores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    turno ENUM('mañana', 'tarde', 'noche') NOT NULL,
+    contacto VARCHAR(100)
+);
+
+-- Tabla: cocina (menú diario)
+CREATE TABLE cocina (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fecha DATE NOT NULL,
+    desayuno VARCHAR(255),
+    comida VARCHAR(255),
+    cena VARCHAR(255)
+);
+
+////
+Usuario administrador de ejemplo (opcional)
+INSERT INTO usuarios (nombre, correo, nip, rol)
+VALUES ('Administrador', 'admin@uta.com', '1234', 'admin');
