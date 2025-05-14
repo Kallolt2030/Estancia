@@ -6,7 +6,7 @@
     font-family: 'Segoe UI', sans-serif;
 }
 
-/* Estructura de la página */
+/* Estructura general */
 html, body {
     height: 100%;
     display: flex;
@@ -14,35 +14,81 @@ html, body {
     background-color: #f5f5f5;
     color: #333;
     line-height: 1.6;
+    padding-top: 120px; /* espacio para el header fijo */
 }
 
-/* Header */
+/* Main ocupa el espacio disponible */
+main {
+    flex: 1;
+    padding-top: 120px; /* Ajuste si es necesario, para evitar que se solape el contenido */
+}
+
+/* Header fijo con transición */
 header {
     background-color: #004080;
     color: #fff;
     padding: 20px;
-    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: top 0.4s ease;
+}
+
+/* Clase para ocultar el header al hacer scroll hacia abajo */
+header.oculto {
+    top: -100px;
 }
 
 /* Navegación dentro del header */
 nav {
     margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
+/* Bloque de enlaces centrados */
+.nav-centro {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+/* Bloque derecho (Acceso) */
+.nav-acceso {
+    margin-left: auto;
+    padding-left: 15px;
+}
+
+/* Ícono personalizado */
+.icono-acceso {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Hace el ícono redondo */
+    vertical-align: middle;
+    margin-right: 5px;
+    transition: all 0.3s ease;
+}
+
+/* Estilo de enlaces */
 nav a {
     color: #fff;
     text-decoration: none;
-    margin: 0 10px;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+    padding: 5px 10px;
 }
 
+/* Hover moderno para enlaces */
 nav a:hover {
-    text-decoration: underline;
-}
-
-/* Main ocupa el espacio disponible para empujar el footer hacia abajo */
-main {
-    flex: 1;
+    color: #00ffb7;
+    transform: translateY(-3px);
+    text-decoration: none;
 }
 
 /* Footer siempre al fondo */
@@ -52,4 +98,5 @@ footer {
     text-align: center;
     padding: 15px;
     width: 100%;
+    margin-top: auto; /* Empuja el footer al fondo */
 }
