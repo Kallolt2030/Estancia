@@ -1,12 +1,12 @@
 /* Reset básico */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-/* Estructura general */
+/* General */
 html, body {
     height: 100%;
     display: flex;
@@ -14,89 +14,84 @@ html, body {
     background-color: #f5f5f5;
     color: #333;
     line-height: 1.6;
-    padding-top: 120px; /* espacio para el header fijo */
+    padding-top: 120px;
 }
 
-/* Main ocupa el espacio disponible */
-main {
-    flex: 1;
-    padding-top: 120px; /* Ajuste si es necesario, para evitar que se solape el contenido */
+/* NAV SUPERIOR (siempre visible) */
+.nav-superior {
+  background-color: #004080;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  padding: 0 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
 }
 
-/* Header fijo con transición */
-header {
-    background-color: #004080;
-    color: #fff;
-    padding: 20px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    transition: top 0.4s ease;
+.logo {
+  font-size: 24px;
+  font-weight: bold;
 }
 
-/* Clase para ocultar el header al hacer scroll hacia abajo */
-header.oculto {
-    top: -100px;
+.nav-acceso img.icono-acceso {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
 }
 
-/* Navegación dentro del header */
-nav {
-    margin-top: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.nav-acceso img.icono-acceso:hover {
+  transform: scale(1.1);
 }
 
-/* Bloque de enlaces centrados */
-.nav-centro {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
+/* NAV INFERIOR (ocultable al hacer scroll) */
+.nav-inferior {
+  background-color: #003366;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+  height: 50px;
+  padding: 0 10px;
+  position: fixed;
+  top: 60px;
+  width: 100%;
+  z-index: 999;
+  transition: transform 0.3s ease;
 }
 
-/* Bloque derecho (Acceso) */
-.nav-acceso {
-    margin-left: auto;
-    padding-left: 15px;
+.nav-inferior a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 8px 12px;
+  transition: color 0.3s ease;
 }
 
-/* Ícono personalizado */
-.icono-acceso {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%; /* Hace el ícono redondo */
-    vertical-align: middle;
-    margin-right: 5px;
-    transition: all 0.3s ease;
+.nav-inferior a:hover {
+  color: #00ffb7;
 }
 
-/* Estilo de enlaces */
-nav a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    transition: all 0.3s ease;
-    padding: 5px 10px;
+/* Clase que oculta la nav-inferior */
+.nav-inferior.oculto {
+  transform: translateY(-100%);
 }
 
-/* Hover moderno para enlaces */
-nav a:hover {
-    color: #00ffb7;
-    transform: translateY(-3px);
-    text-decoration: none;
-}
-
-/* Footer siempre al fondo */
+/* Footer */
 footer {
     background-color: #004080;
     color: #fff;
     text-align: center;
     padding: 15px;
     width: 100%;
-    margin-top: auto; /* Empuja el footer al fondo */
+    margin-top: auto;
+}
+main {
+    flex: 1;
+    padding-top: 120px;
 }

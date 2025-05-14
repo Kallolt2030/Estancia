@@ -1,21 +1,14 @@
-  let prevScrollPos = window.pageYOffset;
-  const header = document.querySelector('header');
+let lastScroll = 0;
+const nav2 = document.querySelector('.nav-inferior');
 
-  window.addEventListener('scroll', () => {
-    const currentScrollPos = window.pageYOffset;
+window.addEventListener('scroll', () => {
+  const currentScroll = window.pageYOffset;
 
-    if (prevScrollPos > currentScrollPos || currentScrollPos < 20) {
-      header.classList.remove('oculto');
-    } else {
-      header.classList.add('oculto');
-    }
+  if (currentScroll > lastScroll) {
+    nav2.classList.add('oculto'); // Oculta nav 2
+  } else {
+    nav2.classList.remove('oculto'); // Muestra nav 2
+  }
 
-    prevScrollPos = currentScrollPos;
-  });
-
-  document.addEventListener('mousemove', (e) => {
-    if (e.clientY < 60) {
-      header.classList.remove('oculto');
-    }
-  });
-
+  lastScroll = currentScroll;
+});
