@@ -19,7 +19,7 @@ html, body {
 
 /* NAV SUPERIOR (siempre visible) */
 .nav-superior {
-  background-color: #004080;
+  background-color: #5fc742;
   color: #fff;
   display: flex;
   justify-content: space-between;
@@ -51,7 +51,7 @@ html, body {
 
 /* NAV INFERIOR (ocultable al hacer scroll) */
 .nav-inferior {
-  background-color: #003366;
+  background-color: #87db57;
   display: flex;
   justify-content: center;
   gap: 20px;
@@ -74,7 +74,7 @@ html, body {
 }
 
 .nav-inferior a:hover {
-  color: #00ffb7;
+  color: #eced9c;
 }
 
 /* Clase que oculta la nav-inferior */
@@ -84,7 +84,7 @@ html, body {
 
 /* Footer */
 footer {
-    background-color: #004080;
+    background-color: #248000;
     color: #fff;
     text-align: center;
     padding: 15px;
