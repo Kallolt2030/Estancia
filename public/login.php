@@ -13,11 +13,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <?php include '../includes/header.php'; ?>
+<link rel="stylesheet" href="../assets/css/login.css">
+
 <h2>Ingreso</h2>
 <?php if (isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
-<form method="post">
-    <label for="nip">NIP:</label>
-    <input type="password" name="nip" required>
-    <button type="submit">Entrar</button>
+
+<!-- Formulario de ingreso -->
+<form method="post" class="login-form">
+    <label for="nip">NIP:</label><br>
+    <input type="password" name="nip" required class="input-nip"><br>
+    
+    <!-- Botón de puerta verde -->
+    <button type="submit" class="enter-button">
+        Entrar
+    </button>
 </form>
+
 <?php include '../includes/footer.php'; ?>

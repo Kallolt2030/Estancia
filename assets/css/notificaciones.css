@@ -1,0 +1,11 @@
+body {
+  background-color: #fff8e1;
+  font-family: 'Calibri', sans-serif;
+}
+
+.notification {
+  background-color: #fff3cd;
+  border-left: 5px solid #ffa000;
+  padding: 10px;
+  margin-bottom: 10px;
+}

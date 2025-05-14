@@ -1,9 +1,12 @@
-<?php include '../includes/header.php'; ?>
-
+<?php
+$pageTitle = "Inicio | Proyecto UTA";
+include '../includes/header.php';
+?>
+<link rel="stylesheet" href="../assets/css/index.css">
 <div class="hero">
     <h1>Bienvenidos al Proyecto UTA</h1>
     <p>Cuidamos con amor, acompañamos con dignidad.</p>
-    <a href="login.php" class="btn">Acceder como familiar</a>
+
 </div>
 
 <section class="info">

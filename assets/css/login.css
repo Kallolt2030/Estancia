@@ -1,0 +1,38 @@
+/* Estilo del formulario */
+.login-form {
+    text-align: center;
+}
+
+/* Estilo del campo de entrada del NIP */
+.input-nip {
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+/* Estilo del botón de entrada (puerta verde) */
+.enter-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 40px;
+    font-size: 18px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+/* Efecto de hover sobre el botón */
+.enter-button:hover {
+    background-color: #45a049;
+    transform: scale(1.1);
+}
+
+/* Efecto de presionar el botón */
+.enter-button:active {
+    background-color: #388e3c;
+    transform: scale(1);
+}

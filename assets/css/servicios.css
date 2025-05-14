@@ -1,0 +1,10 @@
+body {
+  background-color: #e8f4f8;
+  font-family: 'Verdana', sans-serif;
+  padding: 20px;
+}
+
+ul {
+  list-style-type: square;
+  padding-left: 20px;
+}
