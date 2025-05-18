@@ -1,5 +1,6 @@
 <?php include '../includes/auth.php'; ?>
-<?php include '../includes/header.php'; ?>
+
+<link rel="stylesheet" href="../assets/css/indexAD.css">
 <h2>Panel Principal</h2>
 <p>Bienvenido al panel del familiar.</p>
 <nav>
