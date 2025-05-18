@@ -1,106 +1,112 @@
-/* Reset básico */
-* {
+
+  body, html {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
-}
+    font-family: Arial, sans-serif;
+    height: 100vh;
+  }
 
-/* General */
-body {
-    background-color: #f5f5f5;
-    color: #333;
-    line-height: 1.6;
-}
+  .background {
+    position: fixed;
+    width: 200%;
+    height: 100%;
+    background: url('../img/fondo.jpg');
+    filter: blur(5px) brightness(0.6);
+    z-index: -1;
+  }
 
-/* Hero principal */
-.hero {
-    background: linear-gradient(to right, #cce0ff, #e6f0ff);
-    text-align: center;
-    padding: 100px 20px;
-}
-
-.hero h1 {
-    font-size: 3rem;
-    color: #004080;
-    margin-bottom: 10px;
-}
-
-.hero p {
-    font-size: 1.2rem;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-.btn {
-    background-color: #0077cc;
-    color: #fff;
-    padding: 12px 30px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background 0.3s ease;
-}
-
-.btn:hover {
-    background-color: #005fa3;
-}
-
-/* Secciones informativas */
-.info {
-    background-color: #fff;
-    padding: 40px 20px;
-    text-align: center;
-}
-
-.info h2 {
-    font-size: 2rem;
-    color: #004080;
-    margin-bottom: 15px;
-}
-
-.info p {
-    max-width: 800px;
-    margin: 0 auto;
-    font-size: 1.1rem;
-}
-
-/* Sección de enlaces */
-.enlaces {
-    background-color: #e6f0ff;
-    padding: 40px 20px;
-    text-align: center;
-}
-
-.enlaces h2 {
-    font-size: 2rem;
-    color: #004080;
-    margin-bottom: 20px;
-}
-
-/* Tarjetas de navegación */
-.cards {
+  .container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-}
+    justify-content: space-between;
+    padding: 50px;
+    color: white;
+  }
 
-.card {
-    background-color: #ffffff;
-    border: 2px solid #004080;
+  .formulario {
+    width: 45%;
+    background: rgba(0,0,0,0.5);
+    padding: 30px;
     border-radius: 10px;
-    padding: 25px;
-    width: 180px;
+  }
+
+  .formulario h2 {
+    margin-bottom: 20px;
+  }
+
+  .formulario input, .formulario textarea, .formulario button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 2;
+    border-radius: 5px;
+  }
+
+  .formulario button {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+  }
+
+  .info {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: rgba(0,0,0,0.4);
+    padding: 30px;
+    border-radius: 10px;
+  }
+
+  .direccion {
+    margin-bottom: 30px;
+  }
+
+  .redes a {
+    color: white;
+    margin-right: 15px;
+    font-size: 24px;
     text-decoration: none;
-    color: #004080;
-    font-weight: bold;
-    transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .redes-sociales {
+  text-align: center;
+  margin-top: 30px;
 }
 
-.card:hover {
-    background-color: #004080;
-    color: #fff;
-    transform: translateY(-5px);
+.redes-sociales h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
 }
+
+.redes-sociales .iconos {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  transition: transform 0.2s ease;
+}
+
+
+
+
+.redes-sociales .iconos a img {
+  width: 24px;
+  height: auto;
+}
+
+.redes-sociales .iconos a img:hover {
+  transform: scale(1.2);
+}
+
+
+
+
+  @media screen and (max-width: 768px) {
+    .container {
+      flex-direction: column;
+      align-items: center;
+    }
+    .formulario, .info {
+      width: 90%;
+      margin-bottom: 20px;
+    }
+  }
