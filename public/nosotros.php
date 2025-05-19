@@ -14,6 +14,9 @@
   </video>
 </div>
 
+<main>
+  
+</main>
 <section class="quienes-somos contenedor">
   <div class="quienes-somos__titulo">
     <h2>¿Quiénes Somos?</h2>

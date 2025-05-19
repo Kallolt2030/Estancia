@@ -10,8 +10,119 @@
 html, body {
     height: 100%;
     display: flex;
-    flex-direction: column;
-    background-color: #f5f5f5;
+    flex-direction: column;/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Fondo oscurecido */
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('../img/fondo.jpg') center center / cover no-repeat;
+  filter: brightness(0.5);
+  z-index: -1;
+}
+
+/* General */
+html, body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* NAV SUPERIOR */
+.nav-superior {
+  background-color: #5fc742;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  padding: 0 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.nav-acceso img.icono-acceso {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.nav-acceso img.icono-acceso:hover {
+  transform: scale(1.1);
+}
+
+/* NAV INFERIOR */
+.nav-inferior {
+  background-color: #87db57;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+  height: 50px;
+  padding: 0 10px;
+  position: fixed;
+  top: 60px;
+  width: 100%;
+  z-index: 999;
+  transition: transform 0.3s ease;
+}
+
+.nav-inferior a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 8px 12px;
+  transition: color 0.3s ease;
+}
+
+.nav-inferior a:hover {
+  color: #eced9c;
+}
+
+/* Clase que oculta la nav-inferior */
+.nav-inferior.oculto {
+  transform: translateY(-100%);
+}
+
+/* Contenido principal */
+main {
+  flex: 1;
+  padding-top: 120px; /* Altura combinada de nav-superior + nav-inferior */
+  padding: 120px 20px 20px;
+  z-index: 1;
+}
+
+/* Footer */
+footer {
+  background-color: #248000;
+  color: #fff;
+  text-align: center;
+  padding: 15px;
+  width: 100%;
+  margin-top: auto;
+  z-index: 1;
+}
+
     color: #333;
     line-height: 1.6;
      
