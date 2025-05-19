@@ -1,74 +1,43 @@
-/* Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+.panel-card {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease;
+  text-align: center;
 }
 
-body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #f0f4f8;
-    color: #333;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+.panel-card:hover {
+  transform: translateY(-4px);
 }
 
-/* Encabezado principal */
-h2 {
-    text-align: center;
-    margin-top: 40px;
-    font-size: 2.5rem;
-    color: #004080;
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: #111827;
 }
 
-/* Texto de bienvenida */
-p {
-    text-align: center;
-    margin: 10px auto 30px;
-    font-size: 1.1rem;
-    color: #555;
-    max-width: 800px;
+.card-text {
+  font-size: 0.95rem;
+  color: #4b5563;
 }
 
-/* Contenedor del menú */
-nav {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    padding: 20px 0;
+.card-button {
+  margin-top: 1.5rem;
+  background-color: #3b82f6;
+  color: white;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
 }
 
-/* Estilo de botones del panel */
-nav a {
-    background: linear-gradient(to right, #004080, #0066cc);
-    color: white;
-    text-decoration: none;
-    padding: 14px 24px;
-    border-radius: 12px;
-    font-weight: bold;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-}
-
-nav a:hover {
-    transform: scale(1.05);
-    background: linear-gradient(to right, #003366, #005bb5);
-}
-
-/* Contenedor principal */
-main {
-    flex: 1;
-    padding: 20px;
-}
-
-/* Footer */
-footer {
-    background-color: #004080;
-    color: #fff;
-    text-align: center;
-    padding: 20px;
-    width: 100%;
-    font-size: 0.9rem;
+.card-button:hover {
+  background-color: #2563eb;
 }
