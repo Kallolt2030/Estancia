@@ -1,11 +1,14 @@
 <?php include '../includes/header.php'; ?>
-
 <link rel="stylesheet" href="../assets/css/contacto.css">
+
+<!-- Fondo difuminado -->
 <div class="background"></div>
 
+<!-- Contenedor principal -->
 <div class="container">
+  <!-- Formulario -->
   <div class="formulario">
-    <h2>!Contáctanos¡</h2>
+    <h2>¡Contáctanos!</h2>
     <form method="POST" action="contacto.php">
       <input type="text" name="nombre" placeholder="Tu nombre" required>
       <input type="email" name="email" placeholder="Tu correo electrónico" required>
@@ -15,6 +18,7 @@
     </form>
   </div>
 
+  <!-- Información de contacto -->
   <div class="info">
     <div class="direccion">
       <h3>¿Dónde estamos?</h3>
@@ -23,20 +27,20 @@
       <p>Horario: Lunes a Viernes de 9:00 a 17:00 hrs</p>
       <p>Correo: contacto@proyectouta.com<br>Tel: (449) 123 4567</p>
     </div>
-    
+
+    <!-- Redes sociales -->
     <div class="redes-sociales">
       <h3>Redes Sociales</h3>
-      <a href="#"><i class="fab fa-facebook-square"></i>
-        <img src="../assets/iconos/facebooklog.svg" alt="Facebook">
-    </a>
-      <a href="#"><i class="fab fa-instagram"></i></a>
-      <img src="../assets/iconos/instagramlog.svg" alt="Instagram">
-      <a href="#"><i class="fab fa-whatsapp"></i></a>
+      <div class="iconos">
+        <a href="#"><img src="../assets/iconos/facebooklog.svg" alt="Facebook"></a>
+        <a href="#"><img src="../assets/iconos/instagramlog.svg" alt="Instagram"></a>
+        <a href="#"><img src="../assets/iconos/whatsapp-svgrepo-com.svg" alt="WhatsApp"></a>
+      </div>
     </div>
   </div>
 </div>
 
-
+<!-- Lógica para mostrar alerta -->
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $nombre = htmlspecialchars($_POST['nombre']);
