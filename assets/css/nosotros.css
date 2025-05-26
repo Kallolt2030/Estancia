@@ -1,60 +1,76 @@
-/* body {
-  background-color: #fffdf0;
-  color: #444;
-  font-family: 'Segoe UI', sans-serif;
-  margin: 20px;
-}
-
-h2 {
-  color: #2b3e50;
-} */
+/* Estilos generales */
 h2 {
   font-size: 40px;
+  margin-bottom: 1.5rem;
+  color: #2b3e50;
+  position: relative;
+  display: inline-block;
+}
+
+h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  background-color: #e67e22;
 }
 
 .contenedor {
-    width: 95%;
-    max-width: 120rem;
-    margin: 0 auto;
+  width: 95%;
+  max-width: 120rem;
+  margin: 0 auto;
 }
 
+/* Video hero */
 .video {
   position: relative;
   min-height: 800px;
   max-height: 1120px;
   overflow: hidden;
 }
+
 .overlay {
   position: absolute;
   background: linear-gradient(
-  270deg,
-  rgba(60, 60, 60, 0.6),
-  rgba(30, 30, 30, 0.9)
-);
-
+    270deg,
+    rgba(60, 60, 60, 0.6),
+    rgba(30, 30, 30, 0.9)
+  );
   inset: 0;
   display: flex;
   align-items: center;
 }
+
 video {
   display: block;
   width: 100%;
+  object-fit: cover;
+  height: 100%;
 }
+
 .contenido-video {
   padding: 2rem;
   text-align: center;
+  width: 100%;
 }
+
 .contenido-video h2 {
   color: #FFFFFF;
   font-size: 50px;
   margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
+
 .contenido-video p {
   color: #FFFFFF;
   display: inline-block;
   font-size: 30px;
   font-weight: bold;
   margin: 0;
+  max-width: 800px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 /* Quiénes Somos */
@@ -62,23 +78,90 @@ video {
   display: block;
   width: 80%;
   max-width: 120rem;
-  margin: 70px;
+  margin: 70px auto;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.quienes-somos__texto p {
+  text-align: justify;
+  line-height: 1.8;
+  font-size: 1.1rem;
 }
 
 /* Historia */
 .historia {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  gap: 40px;
   margin-bottom: 70px;
-}
-.historia__texto {
-  text-align: center;
+  align-items: center;
 }
 
+.historia__texto {
+  text-align: justify;
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+.historia__texto p {
+  margin-bottom: 1.5rem;
+}
+
+.imagen-con-sombra {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.imagen-con-sombra:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+/* Valores */
+.valores {
+  text-align: center;
+  margin: 5rem auto;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .historia {
     grid-template-columns: repeat(1, 1fr);
   }
+  
+  .contenido-video h2 {
+    font-size: 2.5rem;
+  }
+  
+  .contenido-video p {
+    font-size: 1.2rem;
+  }
+  
+  .video {
+    min-height: 600px;
+  }
+  
+  .quienes-somos, .historia {
+    width: 90%;
+    margin: 40px auto;
+  }
 }
 
+/* Animaciones personalizadas */
+[data-aos="custom-fade"] {
+  opacity: 0;
+  transition-property: opacity, transform;
+}
+
+[data-aos="custom-fade"].aos-animate {
+  opacity: 1;
+}
