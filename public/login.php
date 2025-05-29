@@ -4,7 +4,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nip = $_POST['nip'];
     if ($nip === '1234') { // Reemplazar con verificación real en DB
         $_SESSION['nip'] = $nip;
-        header('Location: ../dashboard/index.php');
+        header('Location: ../admin/registro.php');
         exit;
     } else {
         $error = "NIP incorrecto.";
