@@ -19,6 +19,7 @@ body, html {
   background: url('../img/fondo.jpg') center center / cover no-repeat;
   filter: blur(5px) brightness(0.5);
   z-index: -1;
+  animation: moveBackground 20s linear infinite alternate;
 }
 
 /* Contenedor principal */
@@ -27,7 +28,7 @@ body, html {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding-top: 40px; /* Espacio superior */
+  padding-top: 40px;
   padding-left: 50px;
   padding-right: 50px;
   color: white;
@@ -49,6 +50,7 @@ body, html {
   color: #f0f0f0;
   letter-spacing: 1px;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  animation: glow 2s infinite alternate;
 }
 
 .formulario input,
@@ -60,26 +62,35 @@ body, html {
   border: 2px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
+  transition: all 0.4s ease;
+  position: relative;
+  z-index: 1;
 }
 
 .formulario input:focus,
 .formulario textarea:focus {
-  border-color: #4CAF50;
+  border-color: #FFDD57;
   outline: none;
-  transition: border-color 0.3s ease;
+  box-shadow: 0 0 10px #FFDD57, 0 0 20px #FFDD57;
+  background: linear-gradient(135deg, rgba(255,221,87,0.1), rgba(255,221,87,0.2));
 }
 
+/* Efecto hover brillante en botón */
 .formulario button {
-  background-color: #4CAF50;
+  background-color: #20b954;
   color: white;
   cursor: pointer;
   border: none;
-  transition: background-color 0.3s ease;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: all 0.4s ease;
+  box-shadow: 0 0 0 transparent;
 }
 
 .formulario button:hover {
-  background-color: #45a049;
+  background-color: #25D366;
   transform: scale(1.05);
+  box-shadow: 0 0 10px #25D366, 0 0 20px #25D366;
 }
 
 /* Información lateral */
@@ -104,7 +115,7 @@ body, html {
   color: #ffdd57;
   text-transform: uppercase;
   letter-spacing: 1px;
-  animation: slideIn 1s ease;
+  animation: slideIn 1s ease, glow 2s infinite alternate;
 }
 
 .direccion p {
@@ -125,87 +136,58 @@ body, html {
   font-size: 20px;
   margin-bottom: 10px;
   color: #ffdd57;
-  animation: slideIn 1s ease;
+  animation: slideIn 1s ease, glow 2s infinite alternate;
 }
 
-.redes-sociales .iconos {
+.redes-sociales .iconos { 
   display: flex;
   justify-content: center;
   gap: 30px;
-  transition: transform 0.2s ease;
 }
 
 .redes-sociales .iconos a img {
   width: 32px;
   height: auto;
   filter: brightness(0.8);
-  transition: transform 0.2s ease, filter 0.2s ease;
+  transition: all 0.4s ease;
 }
 
 .redes-sociales .iconos a img:hover {
   transform: scale(1.2);
-  filter: brightness(1);
+  filter: brightness(1.2);
+  box-shadow: 0 0 10px #fff, 0 0 20px #ffdd57;
 }
 
-.formulario input:focus,
-.formulario textarea:focus {
-  border-color: #FFDD57;
-  outline: none;
-  box-shadow: 0 0 10px #FFDD57, 0 0 20px #FFDD57;
-  background: linear-gradient(135deg, rgba(255,221,87,0.1), rgba(255,221,87,0.2));
+/* Botón de WhatsApp */
+.whatsapp-link {
+  text-decoration: none;
+}
+
+.whatsapp-button {
+  background-color: #25D366;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   transition: all 0.4s ease;
+  box-shadow: 0 0 0 transparent;
 }
 
-.formulario input,
-.formulario textarea {
-  position: relative;
-  z-index: 1;
+.whatsapp-button:hover {
+  background-color: #20b954;
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #20b954, 0 0 20px #20b954;
 }
 
-.formulario input:focus,
-.formulario textarea:focus {
-  border-color: transparent; /* Oculta el borde predeterminado */
+.whatsapp-button img {
+  width: 24px;
+  height: 24px;
 }
-
-.formulario input:focus::after,
-.formulario textarea:focus::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 2px;
-  width: 100%;
-  background: #FFDD57;
-  animation: slideInBorder 0.4s forwards;
-  z-index: 2;
-}
-.formulario h2,
-.direccion h3,
-.redes-sociales h3 {
-  animation: glow 2s infinite alternate;
-}
-.background {
-  animation: moveBackground 20s linear infinite alternate;
-}
-
-@keyframes moveBackground {
-  0% { background-position: center top; }
-  100% { background-position: center bottom; }
-}
-
-
-@keyframes glow {
-  0% { text-shadow: 0 0 5px #FFDD57, 0 0 10px #FFDD57; }
-  100% { text-shadow: 0 0 15px #FFDD57, 0 0 25px #FFDD57; }
-}
-
-
-@keyframes slideInBorder {
-  0% { width: 0; }
-  100% { width: 100%; }
-}
-
-
 
 /* Animaciones */
 @keyframes fadeIn {
@@ -216,6 +198,16 @@ body, html {
 @keyframes slideIn {
   0% { opacity: 0; transform: translateX(-20px); }
   100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes glow {
+  0% { text-shadow: 0 0 5px #FFDD57, 0 0 10px #FFDD57; }
+  100% { text-shadow: 0 0 15px #FFDD57, 0 0 25px #FFDD57; }
+}
+
+@keyframes moveBackground {
+  0% { background-position: center top; }
+  100% { background-position: center bottom; }
 }
 
 /* Responsive (móvil) */

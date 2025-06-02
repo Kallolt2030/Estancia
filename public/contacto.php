@@ -10,11 +10,11 @@
   <!-- Formulario --> 
   <div class="formulario">
     <h2>¡Contáctanos!</h2>
-    <form method="POST" action="contacto.php">
-      <input type="text" name="nombre" placeholder="Tu nombre" required>
-      <input type="email" name="email" placeholder="Tu correo electrónico" required>
-      <input type="text" name="telefono" placeholder="Teléfono de contacto">
-      <textarea name="mensaje" placeholder="¿Cómo podemos ayudarte?" rows="5" required></textarea>
+    <form id="contactForm" onsubmit="enviarCorreo(); return false;">
+      <input type="text" id="nombre" placeholder="Tu nombre" required>
+      <input type="email" id="email" placeholder="Tu correo electrónico" required>
+      <input type="text" id="telefono" placeholder="Teléfono de contacto">
+      <textarea id="mensaje" placeholder="¿Cómo podemos ayudarte?" rows="5" required></textarea>
       <button type="submit">Enviar consulta</button>
     </form>
   </div>
@@ -35,23 +35,37 @@
       <div class="iconos">
         <a href="#"><img src="../assets/iconos/facebooklog.svg" alt="Facebook"></a>
         <a href="#"><img src="../assets/iconos/instagramlog.svg" alt="Instagram"></a>
-        <a href="#"><img src="../assets/iconos/whatsapp-svgrepo-com.svg" alt="WhatsApp"></a>
+      </div>
+
+      <!-- Botón de WhatsApp -->
+      <div style="margin-top: 20px;">
+        <a href="https://wa.me/524951071509?text=Hola%20,%20me%20gustaría%20recibir%20más%20información%20sobre%20los%20servicios%20de%20Estancia%20de%20Vida%20de%20Nuestra%20Señora%20de%20Guadalupe%20." class="whatsapp-link">
+          <button type="button" class="whatsapp-button">
+            Contáctanos por WhatsApp
+            <img src="../assets/iconos/whatsapp-svgrepo-com.svg" alt="WhatsApp">
+          </button>
+        </a>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Lógica para mostrar alerta -->
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $nombre = htmlspecialchars($_POST['nombre']);
-  $email = htmlspecialchars($_POST['email']);
-  $telefono = htmlspecialchars($_POST['telefono']);
-  $mensaje = htmlspecialchars($_POST['mensaje']);
+<!-- Script para enviar el correo con mailto -->
+<script>
+function enviarCorreo() {
+  const nombre = document.getElementById("nombre").value;
+  const email = document.getElementById("email").value;
+  const telefono = document.getElementById("telefono").value;
+  const mensaje = document.getElementById("mensaje").value;
 
-  // Aquí podrías enviar correo o guardar en base de datos
-  echo "<script>alert('Gracias, $nombre. Hemos recibido tu mensaje.');</script>";
+  const destino = "ktbernalgallegos@gmail.com";
+  const asunto = encodeURIComponent("Consulta desde el sitio web");
+  const cuerpo = encodeURIComponent(
+    `Nombre: ${nombre}\nCorreo: ${email}\nTeléfono: ${telefono}\n\nMensaje:\n${mensaje}`
+  );
+
+  window.location.href = `mailto:${destino}?subject=${asunto}&body=${cuerpo}`;
 }
-?>
+</script>
 
 <?php include '../includes/footer.php'; ?>

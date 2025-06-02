@@ -15,7 +15,7 @@
         <div class="contenido-hero">
             <h1>Bienvenidos a Estancia de Vida</h1>
             <p>Un lugar donde la tranquilidad y el cuidado se encuentran</p>
-            <a href="#contacto" class="boton-contacto">Contáctenos →</a>
+            <a href="contacto.php" class="boton-contacto">Contáctenos</a>
         </div>
     </section>
 
