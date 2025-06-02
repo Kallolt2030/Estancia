@@ -7,7 +7,7 @@
 
 <!-- Contenedor principal -->
 <div class="container">
-  <!-- Formulario -->
+  <!-- Formulario --> 
   <div class="formulario">
     <h2>¡Contáctanos!</h2>
     <form method="POST" action="contacto.php">

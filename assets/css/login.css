@@ -30,76 +30,79 @@ body.login-page {
     display: flex;
     justify-content: center;
     align-items: center;
-    perspective: 1000px; /* Ajustado para nueva altura */
+    perspective: 1000px;
 }
 
-/* Puertas con altura reducida */
+/* Puertas con más detalles */
 .door {
     position: absolute;
     width: 50%;
     height: 100%;
     background: linear-gradient(135deg, #1e5631 0%, #4CAF50 100%);
-    border: 10px solid #0d3b1e; /* Reducido de 12px */
-    box-shadow: 0 0 20px rgba(0, 100, 0, 0.5); /* Sombra más sutil */
-    transition: transform 1s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Animación más rápida */
+    border: 10px solid #0d3b1e;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 100, 0, 0.5);
+    transition: transform 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     z-index: 1;
     top: 0;
+    background-size: 200% 200%;
+    background-position: center;
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Textura tipo madera */
+.door::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.05),
+        rgba(255, 255, 255, 0.05) 2px,
+        transparent 2px,
+        transparent 4px
+    );
+    pointer-events: none;
+}
+
+/* Manija dorada */
+.door::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 50px;
+    background: #FFD700;
+    border-radius: 3px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    z-index: 2;
 }
 
 .door-left {
     left: 0;
     transform-origin: left center;
-    border-right: 5px solid #0d3b1e; /* Reducido de 6px */
-    border-radius: 6px 0 0 6px; /* Bordes más pequeños */
+    border-right: 5px solid #0d3b1e;
+    border-radius: 6px 0 0 6px;
+}
+
+.door-left::after {
+    right: 15px;
 }
 
 .door-right {
     right: 0;
     transform-origin: right center;
-    border-left: 5px solid #0d3b1e; /* Reducido de 6px */
-    border-radius: 0 6px 6px 0; /* Bordes más pequeños */
+    border-left: 5px solid #0d3b1e;
+    border-radius: 0 6px 6px 0;
 }
 
-/* Formulario (tamaño proporcional) */
-.login-form-container {
-    position: relative;
-    width: 350px; /* Reducido de 400px */
-    background: rgba(255, 255, 255, 0.95);
-    padding: 30px; /* Reducido de 40px */
-    border-radius: 6px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    z-index: 2;
-    opacity: 0;
-    transition: opacity 0.4s 0.5s; /* Transición más rápida */
-}
-
-/* Resto de estilos se mantienen igual */
-.login-title {
-    color: #1e5631;
-    text-align: center;
-    font-size: 26px; /* Reducido de 28px */
-    margin-bottom: 15px;
-}
-
-.input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 15px;
-}
-
-.submit-btn {
-    padding: 12px; /* Reducido de 15px */
-    font-size: 16px; /* Reducido de 18px */
-}
-
-/* Estados de animación */
-.doors-open .door-left {
-    transform: rotateY(-100deg); /* Ángulo ligeramente menor */
-}
-
-.doors-open .door-right {
-    transform: rotateY(100deg); /* Ángulo ligeramente menor */
+.door-right::after {
+    left: 15px;
 }
 
 /* Formulario */
@@ -134,12 +137,22 @@ body.login-page {
     font-weight: bold;
 }
 
+/* Estilo atractivo para los inputs */
 .input-group input {
     padding: 14px;
     border: 2px solid #4CAF50;
     border-radius: 6px;
     font-size: 16px;
-    background: #f8fff8;
+    background: #f0fff0;
+    color: #1e5631;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: #1e5631;
+    box-shadow: 0 0 8px rgba(30, 86, 49, 0.3);
+    background: #e8f5e9;
 }
 
 .submit-btn {
