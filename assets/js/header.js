@@ -1,14 +1,12 @@
-let lastScroll = 0;
-const nav2 = document.querySelector('.nav-inferior');
-
-window.addEventListener('scroll', () => {
-  const currentScroll = window.pageYOffset;
-
-  if (currentScroll > lastScroll) {
-    nav2.classList.add('oculto'); // Oculta nav 2
-  } else {
-    nav2.classList.remove('oculto'); // Muestra nav 2
-  }
-
-  lastScroll = currentScroll;
+const botonMenu = document.querySelector('.menu-toggle');
+const overlayMenu = document.getElementById('menu');
+const cerrarMenu = document.querySelector('.cerrar-menu');
+ 
+botonMenu.addEventListener('click', () => {
+  overlayMenu.classList.add('abierto');
 });
+ 
+cerrarMenu.addEventListener('click', () => {
+  overlayMenu.classList.remove('abierto');
+});
+ 
