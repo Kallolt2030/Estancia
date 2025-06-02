@@ -1,17 +1,5 @@
 <?php
 session_start();
-
-// Redirigir si no ha iniciado sesión
-if (!isset($_SESSION['nip'])) {
-    header("Location: /login.php");
-    exit();
-}
-
-// Verificar si tiene rol de admin
-if ($_SESSION['rol'] !== 'admin') {
-    echo "Acceso denegado. Esta área es solo para administradores.";
-    exit();
-}
 // Conexión a la base de datos
 $host = 'localhost';
 $user = 'root'; // Cambia si es diferente
