@@ -27,10 +27,8 @@
         </div>
 
         <div class="nav-acceso">
-          <a href="../public/login.php" class="acceso-link">
             <img src="../assets/iconos/user-circle-svgrepo-com (1).svg" alt="Icono Acceso" class="icono-acceso">
             <span>Acceder</span>
-          </a>
         </div>
 
         <div class="menu-overlay" id="menu">
