@@ -1,13 +1,15 @@
-<?php include '../includes/auth.php';?>
+<?php include '../includes/auth.php'; ?>
 <?php include 'control_user.php'; ?>
 <?php include '../includes/headerAD.php'; ?>
 <?php
 // Conexión a la base de datos (el código PHP se mantiene igual)
-$conn = new mysqli("localhost", "root", "", "estancia","3306");
+$conn = new mysqli("localhost", "root", "", "estancia", "3306");
+
 if ($conn->connect_error) {
     die("Error de conexión: " . $conn->connect_error);
 }
 
+// Registro de usuario
 if (isset($_POST['registrar_usuario'])) {
     $nip = $_POST['nip'];
     $nombre = $_POST['nombre'];
@@ -27,6 +29,7 @@ if (isset($_POST['registrar_usuario'])) {
     $stmt->close();
 }
 
+// Registro de paciente
 if (isset($_POST['registrar_paciente'])) {
     $nip = $_POST['paciente_nip'];
     $nombre = $_POST['paciente_nombre'];
@@ -34,7 +37,7 @@ if (isset($_POST['registrar_paciente'])) {
     $telefono = $_POST['paciente_telefono'];
     $diagnostico = $_POST['paciente_diagnostico'];
 
-    $foto_nombre = $_FILES['paciente_foto']['name'];
+    $foto_nombre = uniqid() . "_" . basename($_FILES['paciente_foto']['name']);
     $foto_temp = $_FILES['paciente_foto']['tmp_name'];
     $foto_ruta = "fotos/" . $foto_nombre;
 
@@ -43,9 +46,9 @@ if (isset($_POST['registrar_paciente'])) {
     }
 
     if (move_uploaded_file($foto_temp, $foto_ruta)) {
-        $sql = "INSERT INTO pacientes (nip, nombre, correo, telefono) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO pacientes (nip, nombre, correo, telefono, diagnostico, foto) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssss", $nip, $nombre, $correo, $telefono);
+        $stmt->bind_param("ssssss", $nip, $nombre, $correo, $telefono, $diagnostico, $foto_ruta);
 
         if ($stmt->execute()) {
             echo "<div class='alert success'><span class='icon'>✓</span> Paciente registrado correctamente.</div>";
@@ -76,7 +79,6 @@ $conn->close();
                 .then(response => response.text())
                 .then(nip => {
                     document.getElementById('nip').value = nip;
-                    // Efecto visual al generar NIP
                     const nipField = document.getElementById('nip');
                     nipField.style.boxShadow = '0 0 15px rgba(76, 201, 240, 0.7)';
                     setTimeout(() => {
@@ -92,7 +94,6 @@ $conn->close();
                 });
         }
         
-        // Mostrar nombre del archivo seleccionado
         document.addEventListener('DOMContentLoaded', function() {
             const fileInput = document.querySelector('input[type="file"]');
             if (fileInput) {
@@ -106,7 +107,8 @@ $conn->close();
             }
         });
     </script>
-
+</head>
+<body>
     <div class="container">
         <h1 class="glow-text" style="color: white; margin-bottom: 30px; text-align: center;">Sistema de Registro UTA</h1>
         
@@ -191,4 +193,5 @@ $conn->close();
             </form>
         </div>
     </div>
-
+</body>
+</html>
