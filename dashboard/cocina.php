@@ -1,5 +1,4 @@
-<?php include '../includes/auth.php'; ?>
-<?php include '../includes/headerAD.php'; ?>
+<?php include 'headerDash.php'; ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -20,4 +19,4 @@
   </div>
 </body>
 </html>
-<?php include '../includes/footer.php'; ?>
+

@@ -8,23 +8,9 @@
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
-  <!-- Sección principal del panel de administrador -->
-  <section>
-    <div>
-      <h1>Panel de Administrador</h1>
-      <nav>
-        <ul>
-          <li><a href="../admin/index.php">Inicio</a></li>
-          <li><a href="../admin/registro.php">Registro</a></li>
-          <li><a href="../admin/medicos.php">Medicos</a></li>
-          <li><a href="../admin/expedientes.php">Expedientes</a></li>
-        </ul>
-      </nav>
-    </div>
-  </section>
-
   <section class="hero-video">
     <!-- Video o imagen de fondo se aplicará via CSS -->
+
     <header class="header">
       <div class="barra">
         <div class="logo-container">
@@ -41,10 +27,8 @@
         </div>
 
         <div class="nav-acceso">
-          <a href="../public/login.php" class="acceso-link">
             <img src="../assets/iconos/user-circle-svgrepo-com (1).svg" alt="Icono Acceso" class="icono-acceso">
             <span>Acceder</span>
-          </a>
         </div>
 
         <div class="menu-overlay" id="menu">
@@ -62,9 +46,9 @@
     </header>
   </section>
 
-  <!-- Contenido principal de la página -->
+  <!-- Tu contenido principal iría aquí -->
   <main>
-    <!-- Aquí iría el contenido de la página -->
+    <!-- Contenido de tu página -->
   </main>
 
   <script src="../assets/js/header.js"></script>

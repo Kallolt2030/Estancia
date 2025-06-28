@@ -10,16 +10,28 @@
   <!-- Formulario --> 
   <div class="formulario">
     <h2>¡Contáctanos!</h2>
-    <form id="contactForm" onsubmit="enviarCorreo(); return false;">
-      <input type="text" id="nombre" placeholder="Tu nombre" required>
-      <input type="email" id="email" placeholder="Tu correo electrónico" required>
-      <input type="text" id="telefono" placeholder="Teléfono de contacto">
-      <textarea id="mensaje" placeholder="¿Cómo podemos ayudarte?" rows="5" required></textarea>
-      <button type="submit">Enviar consulta</button>
+    
+    <!-- Mensaje de éxito (oculto inicialmente) -->
+    <div id="mensajeExito" style="display: none; background: #4CAF50; color: white; padding: 15px; border-radius: 5px; margin-bottom: 20px; text-align: center;">
+      ¡Gracias por tu mensaje! Te atenderemos pronto.
+    </div>
+    
+    <form id="contactForm" action="https://formsubmit.co/ktbernalgallegos@gmail.com" method="POST">
+      <!-- Configuración de FormSubmit -->
+      <input type="hidden" name="_next" value="http://localhost/gracias.html"> <!-- Puedes dejarlo o quitarlo -->
+      <input type="hidden" name="_subject" value="Nuevo mensaje desde el sitio web">
+      <input type="hidden" name="_template" value="box">
+      
+      <!-- Campos del formulario -->
+      <input type="text" name="nombre" id="nombre" placeholder="Tu nombre" required>
+      <input type="email" name="email" id="email" placeholder="Tu correo electrónico" required>
+      <input type="text" name="telefono" id="telefono" placeholder="Teléfono de contacto">
+      <textarea name="mensaje" id="mensaje" placeholder="¿Cómo podemos ayudarte?" rows="5" required></textarea>
+      <button type="submit" id="submitBtn">Enviar consulta</button>
     </form>
   </div>
 
-  <!-- Información de contacto -->
+  < <!-- Información de contacto -->
   <div class="info">
     <div class="direccion">
       <h3>¿Dónde estamos?</h3>
@@ -50,22 +62,48 @@
   </div>
 </div>
 
-<!-- Script para enviar el correo con mailto -->
+</div>
+
 <script>
-function enviarCorreo() {
-  const nombre = document.getElementById("nombre").value;
-  const email = document.getElementById("email").value;
-  const telefono = document.getElementById("telefono").value;
-  const mensaje = document.getElementById("mensaje").value;
-
-  const destino = "ktbernalgallegos@gmail.com";
-  const asunto = encodeURIComponent("Consulta desde el sitio web");
-  const cuerpo = encodeURIComponent(
-    `Nombre: ${nombre}\nCorreo: ${email}\nTeléfono: ${telefono}\n\nMensaje:\n${mensaje}`
-  );
-
-  window.location.href = `mailto:${destino}?subject=${asunto}&body=${cuerpo}`;
-}
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+  e.preventDefault(); // Evita el envío normal
+  
+  // Muestra mensaje de "Enviando..."
+  const submitBtn = document.getElementById('submitBtn');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Enviando...';
+  
+  // Realiza el envío mediante Fetch API
+  fetch(this.action, {
+    method: 'POST',
+    body: new FormData(this),
+    headers: {
+      'Accept': 'application/json'
+    }
+  })
+  .then(response => {
+    if (response.ok) {
+      // Muestra el mensaje de éxito
+      document.getElementById('mensajeExito').style.display = 'block';
+      document.getElementById('contactForm').reset();
+      
+      // Oculta el mensaje después de 5 segundos
+      setTimeout(() => {
+        document.getElementById('mensajeExito').style.display = 'none';
+      }, 5000);
+    } else {
+      throw new Error('Error en el envío');
+    }
+  })
+  .catch(error => {
+    alert('Hubo un error al enviar el mensaje. Por favor, inténtalo de nuevo.');
+    console.error('Error:', error);
+  })
+  .finally(() => {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Enviar consulta';
+  });
+});
 </script>
 
 <?php include '../includes/footer.php'; ?>

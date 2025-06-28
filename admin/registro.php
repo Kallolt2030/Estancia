@@ -1,10 +1,15 @@
+<?php include '../includes/auth.php'; ?>
+<?php include 'control_user.php'; ?>
+<?php include '../includes/headerAD.php'; ?>
 <?php
-// Conexión a la base de datos
-$conn = new mysqli("localhost", "root", "", "estancia","3306");
+// Conexión a la base de datos (el código PHP se mantiene igual)
+$conn = new mysqli("localhost", "root", "", "estancia", "3306");
+
 if ($conn->connect_error) {
     die("Error de conexión: " . $conn->connect_error);
 }
 
+// Registro de usuario
 if (isset($_POST['registrar_usuario'])) {
     $nip = $_POST['nip'];
     $nombre = $_POST['nombre'];
@@ -17,13 +22,14 @@ if (isset($_POST['registrar_usuario'])) {
     $stmt->bind_param("sssss", $nip, $nombre, $correo, $telefono, $rol);
 
     if ($stmt->execute()) {
-        echo "<p style='color:green;'>✅ Usuario registrado correctamente.</p>";
+        echo "<div class='alert success'><span class='icon'>✓</span> Usuario registrado correctamente.</div>";
     } else {
-        echo "<p style='color:red;'>❌ Error: " . $stmt->error . "</p>";
+        echo "<div class='alert error'><span class='icon'>✗</span> Error: " . $stmt->error . "</div>";
     }
     $stmt->close();
 }
 
+// Registro de paciente
 if (isset($_POST['registrar_paciente'])) {
     $nip = $_POST['paciente_nip'];
     $nombre = $_POST['paciente_nombre'];
@@ -31,7 +37,7 @@ if (isset($_POST['registrar_paciente'])) {
     $telefono = $_POST['paciente_telefono'];
     $diagnostico = $_POST['paciente_diagnostico'];
 
-    $foto_nombre = $_FILES['paciente_foto']['name'];
+    $foto_nombre = uniqid() . "_" . basename($_FILES['paciente_foto']['name']);
     $foto_temp = $_FILES['paciente_foto']['tmp_name'];
     $foto_ruta = "fotos/" . $foto_nombre;
 
@@ -40,20 +46,20 @@ if (isset($_POST['registrar_paciente'])) {
     }
 
     if (move_uploaded_file($foto_temp, $foto_ruta)) {
-        $sql = "INSERT INTO pacientes (nip, nombre, correo, telefono) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO pacientes (nip, nombre, correo, telefono, diagnostico, foto) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssss", $nip, $nombre, $correo, $telefono);
+        $stmt->bind_param("ssssss", $nip, $nombre, $correo, $telefono, $diagnostico, $foto_ruta);
 
         if ($stmt->execute()) {
-            echo "<p style='color:green;'>✅ Paciente registrado correctamente.</p>";
-            echo "<p><strong>📄 Diagnóstico:</strong> $diagnostico</p>";
-            echo "<p><strong>🖼️ Foto:</strong><br><img src='$foto_ruta' width='120'></p>";
+            echo "<div class='alert success'><span class='icon'>✓</span> Paciente registrado correctamente.</div>";
+            echo "<div class='diagnostico-box'><strong>📄 Diagnóstico:</strong> $diagnostico</div>";
+            echo "<div class='foto-box'><strong>🖼️ Foto:</strong><br><img src='$foto_ruta' class='foto-preview'></div>";
         } else {
-            echo "<p style='color:red;'>❌ Error al registrar paciente: " . $stmt->error . "</p>";
+            echo "<div class='alert error'><span class='icon'>✗</span> Error al registrar paciente: " . $stmt->error . "</div>";
         }
         $stmt->close();
     } else {
-        echo "<p style='color:red;'>❌ Error al subir la foto.</p>";
+        echo "<div class='alert error'><span class='icon'>✗</span> Error al subir la foto.</div>";
     }
 }
 
@@ -64,51 +70,128 @@ $conn->close();
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Registro UTA</title>
-    <style>
-        body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 30px; }
-        form { background: #fff; padding: 20px; margin-bottom: 40px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        input, select, textarea, button { width: 100%; margin-bottom: 15px; padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
-        input[type="submit"], button { background: #007bff; color: white; font-weight: bold; cursor: pointer; }
-        h2 { margin-top: 0; }
-    </style>
+    <title>Registro UTA | Sistema Moderno</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/registroAD.css">
     <script>
         function generarNip() {
             fetch('generar_nip.php')
                 .then(response => response.text())
                 .then(nip => {
                     document.getElementById('nip').value = nip;
+                    const nipField = document.getElementById('nip');
+                    nipField.style.boxShadow = '0 0 15px rgba(76, 201, 240, 0.7)';
+                    setTimeout(() => {
+                        nipField.style.boxShadow = 'none';
+                    }, 1000);
                 })
-                .catch(error => alert('Error al generar NIP: ' + error));
+                .catch(error => {
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert error';
+                    alertDiv.innerHTML = `<span class="icon">✗</span> Error al generar NIP: ${error}`;
+                    document.querySelector('.container').prepend(alertDiv);
+                    setTimeout(() => alertDiv.remove(), 5000);
+                });
         }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.querySelector('input[type="file"]');
+            if (fileInput) {
+                fileInput.addEventListener('change', function(e) {
+                    const fileName = e.target.files[0]?.name || 'Ningún archivo seleccionado';
+                    const label = document.querySelector('.file-input-label span');
+                    if (label) {
+                        label.textContent = fileName;
+                    }
+                });
+            }
+        });
     </script>
 </head>
 <body>
-
-<h2>Formulario de Registro de Usuario</h2>
-<form method="POST">
-    <input type="text" id="nip" name="nip" placeholder="NIP (clic en Generar)" readonly required>
-    <button type="button" onclick="generarNip()">Generar NIP</button>
-    <input type="text" name="nombre" placeholder="Nombre completo" required>
-    <input type="email" name="correo" placeholder="Correo electrónico" required>
-    <input type="text" name="telefono" placeholder="Teléfono">
-    <select name="rol">
-        <option value="familiar">Familiar</option>
-        <option value="admin">Admin</option>
-    </select>
-    <input type="submit" name="registrar_usuario" value="Registrar Usuario">
-</form>
-
-<h2>Formulario de Registro de Paciente</h2>
-<form method="POST" enctype="multipart/form-data">
-    <input type="text" name="paciente_nip" placeholder="NIP del familiar (usuario existente)" required>
-    <input type="text" name="paciente_nombre" placeholder="Nombre del paciente" required>
-    <input type="email" name="paciente_correo" placeholder="Correo del paciente" required>
-    <input type="text" name="paciente_telefono" placeholder="Teléfono del paciente">
-    <textarea name="paciente_diagnostico" placeholder="Diagnóstico del paciente" required></textarea>
-    <input type="file" name="paciente_foto" accept="image/*" required>
-    <input type="submit" name="registrar_paciente" value="Registrar Paciente">
-</form>
-
+    <div class="container">
+        <h1 class="glow-text" style="color: white; margin-bottom: 30px; text-align: center;">Sistema de Registro UTA</h1>
+        
+        <div class="card">
+            <h2>Registro de Usuario</h2>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="nip">NIP (Identificación única)</label>
+                    <input type="text" id="nip" name="nip" placeholder="Haz clic en 'Generar NIP'" readonly required>
+                </div>
+                <button type="button" onclick="generarNip()" class="btn-generar">
+                    <i class="fas fa-key"></i> Generar NIP Automático
+                </button>
+                
+                <div class="form-group">
+                    <label for="nombre">Nombre completo</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Ej: Juan Pérez López" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="correo">Correo electrónico</label>
+                    <input type="email" id="correo" name="correo" placeholder="Ej: usuario@example.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="telefono">Teléfono</label>
+                    <input type="text" id="telefono" name="telefono" placeholder="Ej: 5512345678">
+                </div>
+                
+                <div class="form-group">
+                    <label for="rol">Rol del usuario</label>
+                    <select id="rol" name="rol">
+                        <option value="familiar">Familiar</option>
+                        <option value="admin">Administrador</option>
+                    </select>
+                </div>
+                
+                <input type="submit" name="registrar_usuario" value="Registrar Usuario">
+            </form>
+        </div>
+        
+        <div class="card">
+            <h2>Registro de Paciente</h2>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="paciente_nip">NIP del familiar asociado</label>
+                    <input type="text" id="paciente_nip" name="paciente_nip" placeholder="NIP del usuario registrado" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="paciente_nombre">Nombre del paciente</label>
+                    <input type="text" id="paciente_nombre" name="paciente_nombre" placeholder="Ej: María González Sánchez" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="paciente_correo">Correo del paciente</label>
+                    <input type="email" id="paciente_correo" name="paciente_correo" placeholder="Ej: paciente@example.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="paciente_telefono">Teléfono del paciente</label>
+                    <input type="text" id="paciente_telefono" name="paciente_telefono" placeholder="Ej: 5512345678">
+                </div>
+                
+                <div class="form-group">
+                    <label for="paciente_diagnostico">Diagnóstico médico</label>
+                    <textarea id="paciente_diagnostico" name="paciente_diagnostico" rows="4" placeholder="Describa el diagnóstico del paciente..." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Fotografía del paciente</label>
+                    <div class="file-input-wrapper">
+                        <label class="file-input-label">
+                            <i class="fas fa-camera"></i>
+                            <span>Seleccionar archivo...</span>
+                        </label>
+                        <input type="file" name="paciente_foto" accept="image/*" required>
+                    </div>
+                </div>
+                
+                <input type="submit" name="registrar_paciente" value="Registrar Paciente">
+            </form>
+        </div>
+    </div>
 </body>
 </html>

@@ -1,5 +1,6 @@
-<?php include '../includes/auth.php'; ?>
-<?php include '../includes/header.php'; ?>
+<?php include '../includes/auth.php';?>
+<?php include 'control_user.php'; ?>
+<?php include '../includes/headerAD.php'; ?>
 <h2>Gestión de Expedientes</h2>
 <table border="1">
     <tr>

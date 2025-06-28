@@ -1,8 +1,6 @@
-<?php
-require_once __DIR__ . '/control_user.php'; // Asegura la sesión y permisos
-require_once __DIR__ . '/../includes/auth.php'; // Manejo seguro de sesión
-require_once __DIR__ . '/../includes/header.php';
-?>
+<?php include '../includes/auth.php';?>
+<?php include 'control_user.php'; ?>
+<?php include '../includes/headerAD.php'; ?>
 
 
 <h2>Panel Administrativo</h2>
