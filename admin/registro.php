@@ -1,13 +1,9 @@
-<?php include '../includes/auth.php'; ?>
-<?php include 'control_user.php'; ?>
+<?php include '../control/auth.php';?>
+<?php include '../control/control_user.php'; ?>
 <?php include '../includes/headerAD.php'; ?>
 <?php
 // Conexión a la base de datos (el código PHP se mantiene igual)
-$conn = new mysqli("localhost", "root", "", "estancia", "3306");
-
-if ($conn->connect_error) {
-    die("Error de conexión: " . $conn->connect_error);
-}
+include '../control/bd.php';
 
 // Registro de usuario
 if (isset($_POST['registrar_usuario'])) {
@@ -63,7 +59,6 @@ if (isset($_POST['registrar_paciente'])) {
     }
 }
 
-$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -71,7 +66,6 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <title>Registro UTA | Sistema Moderno</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/registroAD.css">
     <script>
         function generarNip() {
@@ -108,37 +102,37 @@ $conn->close();
         });
     </script>
 </head>
-<body>
-    <div class="container">
-        <h1 class="glow-text" style="color: white; margin-bottom: 30px; text-align: center;">Sistema de Registro UTA</h1>
+<body id="registro-uta-body">
+    <div id="registro-uta-container" class="registro-container">
+        <h1 class="registro-glow-text">Sistema de Registro UTA</h1>
         
-        <div class="card">
-            <h2>Registro de Usuario</h2>
-            <form method="POST">
-                <div class="form-group">
+        <div class="registro-card">
+            <h2 class="registro-subtitulo">Registro de Usuario</h2>
+            <form method="POST" class="registro-form">
+                <div class="registro-form-group">
                     <label for="nip">NIP (Identificación única)</label>
                     <input type="text" id="nip" name="nip" placeholder="Haz clic en 'Generar NIP'" readonly required>
                 </div>
-                <button type="button" onclick="generarNip()" class="btn-generar">
+                <button type="button" onclick="generarNip()" class="btn-generar-nip">
                     <i class="fas fa-key"></i> Generar NIP Automático
                 </button>
                 
-                <div class="form-group">
+                <div class="registro-form-group">
                     <label for="nombre">Nombre completo</label>
                     <input type="text" id="nombre" name="nombre" placeholder="Ej: Juan Pérez López" required>
                 </div>
                 
-                <div class="form-group">
+                <div class="registro-form-group">
                     <label for="correo">Correo electrónico</label>
                     <input type="email" id="correo" name="correo" placeholder="Ej: usuario@example.com" required>
                 </div>
                 
-                <div class="form-group">
+                <div class="registro-form-group">
                     <label for="telefono">Teléfono</label>
                     <input type="text" id="telefono" name="telefono" placeholder="Ej: 5512345678">
                 </div>
                 
-                <div class="form-group">
+                <div class="registro-form-group">
                     <label for="rol">Rol del usuario</label>
                     <select id="rol" name="rol">
                         <option value="familiar">Familiar</option>
@@ -146,52 +140,53 @@ $conn->close();
                     </select>
                 </div>
                 
-                <input type="submit" name="registrar_usuario" value="Registrar Usuario">
+                <input type="submit" name="registrar_usuario" value="Registrar Usuario" class="btn-submit-usuario">
             </form>
         </div>
         
-        <div class="card">
-            <h2>Registro de Paciente</h2>
-            <form method="POST" enctype="multipart/form-data">
-                <div class="form-group">
+        <div class="registro-card">
+            <h2 class="registro-subtitulo">Registro de Paciente</h2>
+            <form method="POST" enctype="multipart/form-data" class="registro-form">
+                <div class="registro-form-group">
                     <label for="paciente_nip">NIP del familiar asociado</label>
                     <input type="text" id="paciente_nip" name="paciente_nip" placeholder="NIP del usuario registrado" required>
                 </div>
                 
-                <div class="form-group">
+                <div class="registro-form-group">
                     <label for="paciente_nombre">Nombre del paciente</label>
                     <input type="text" id="paciente_nombre" name="paciente_nombre" placeholder="Ej: María González Sánchez" required>
                 </div>
                 
-                <div class="form-group">
+                <div class="registro-form-group">
                     <label for="paciente_correo">Correo del paciente</label>
                     <input type="email" id="paciente_correo" name="paciente_correo" placeholder="Ej: paciente@example.com" required>
                 </div>
                 
-                <div class="form-group">
+                <div class="registro-form-group">
                     <label for="paciente_telefono">Teléfono del paciente</label>
                     <input type="text" id="paciente_telefono" name="paciente_telefono" placeholder="Ej: 5512345678">
                 </div>
                 
-                <div class="form-group">
+                <div class="registro-form-group">
                     <label for="paciente_diagnostico">Diagnóstico médico</label>
                     <textarea id="paciente_diagnostico" name="paciente_diagnostico" rows="4" placeholder="Describa el diagnóstico del paciente..." required></textarea>
                 </div>
                 
-                <div class="form-group">
-                    <label>Fotografía del paciente</label>
-                    <div class="file-input-wrapper">
-                        <label class="file-input-label">
-                            <i class="fas fa-camera"></i>
-                            <span>Seleccionar archivo...</span>
-                        </label>
-                        <input type="file" name="paciente_foto" accept="image/*" required>
-                    </div>
-                </div>
+                <div class="registro-form-group">
+    <label>Fotografía del paciente</label>
+    <div class="registro-file-wrapper">
+        <!-- El label está vinculado al input con for="paciente_foto" -->
+        <label class="registro-file-label" for="paciente_foto">
+            <i class="fas fa-camera"></i>
+            <span>Seleccionar archivo...</span>
+        </label>
+        <input type="file" id="paciente_foto" name="paciente_foto" accept="image/*" required>
+    </div>
+</div>
+
                 
-                <input type="submit" name="registrar_paciente" value="Registrar Paciente">
+                <input type="submit" name="registrar_paciente" value="Registrar Paciente" class="btn-submit-paciente">
             </form>
         </div>
     </div>
 </body>
-</html>

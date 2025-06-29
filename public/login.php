@@ -1,47 +1,45 @@
 <?php
 session_start();
-// Conexión a la base de datos
-$host = 'localhost';
-$user = 'root'; // Cambia si es diferente
-$pass = '';     // Cambia si tienes contraseña
-$dbname = 'estancia'; // <--- CAMBIA ESTO POR EL NOMBRE DE TU BD
 
-$conn = new mysqli($host, $user, $pass, $dbname);
-if ($conn->connect_error) {
-    die("Error en la conexión: " . $conn->connect_error);
-}
+// Conexión a la base de datos
+include '../control/bd.php'; // Asegúrate de que la ruta sea correcta
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nip = $_POST['nip'];
 
-    // Consulta el nip
-    $stmt = $conn->prepare("SELECT * FROM usuarios WHERE nip = ?");
-    $stmt->bind_param("s", $nip);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
+    try {
+        // Consulta el nip usando PDO
+        $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE nip = :nip");
+        $stmt->bindParam(':nip', $nip, PDO::PARAM_STR);
+        $stmt->execute();
+        
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($resultado->num_rows === 1) {
-        $usuario = $resultado->fetch_assoc();
-        $_SESSION['nip'] = $usuario['nip'];
-        $_SESSION['nombre'] = $usuario['nombre'];
-        $_SESSION['rol'] = $usuario['rol'];
+        if ($resultado) {
+            $_SESSION['nip'] = $resultado['nip'];
+            $_SESSION['nombre'] = $resultado['nombre'];
+            $_SESSION['rol'] = $resultado['rol'];
 
-        if ($usuario['rol'] === 'admin') {
-            header('Location: ../admin/registro.php');
+            if ($resultado['rol'] === 'admin') {
+                header('Location: ../admin/registro.php');
+            } else {
+                header('Location: ../dashboard/index.php');
+            }
+            exit;
         } else {
-            header('Location: ../dashboard/index.php');
+            $error = "NIP incorrecto o no registrado.";
         }
-        exit;
-    } else {
-        $error = "NIP incorrecto o no registrado.";
-    }
 
-    $stmt->close();
+        $stmt->closeCursor();
+    } catch (PDOException $e) {
+        // Captura cualquier error de la base de datos
+        die("Error al ejecutar la consulta: " . $e->getMessage());
+    }
 }
-$conn->close();
 
 include '../includes/header.php';
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>

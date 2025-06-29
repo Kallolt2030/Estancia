@@ -1,4 +1,4 @@
-<?php include 'headerDash.php'; ?>
+<?php include '../includes/headerDash.php'; ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
