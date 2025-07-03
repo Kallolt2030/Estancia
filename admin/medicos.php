@@ -1,5 +1,5 @@
-<?php include '../includes/auth.php';?>
-<?php include 'control_user.php'; ?>
+<?php include '../control/auth.php';?>
+<?php include '../control/control_user.php'; ?>
 <?php include '../includes/headerAD.php'; ?>
 <h2>Gestión de Médicos</h2>
 <table border="1">

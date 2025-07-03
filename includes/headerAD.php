@@ -3,28 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Estancia de Vida</title>
+  <title>Panel de Administrador | Estancia de Vida</title>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
-<body>
-  <!-- Sección principal del panel de administrador -->
-  <section>
-    <div>
-      <h1>Panel de Administrador</h1>
-      <nav>
-        <ul>
-          <li><a href="../admin/index.php">Inicio</a></li>
-          <li><a href="../admin/registro.php">Registro</a></li>
-          <li><a href="../admin/medicos.php">Medicos</a></li>
-          <li><a href="../admin/expedientes.php">Expedientes</a></li>
-        </ul>
-      </nav>
-    </div>
-  </section>
-
+<body>      
   <section class="hero-video">
-    <!-- Video o imagen de fondo se aplicará via CSS -->
     <header class="header">
       <div class="barra">
         <div class="logo-container">
@@ -33,40 +17,37 @@
             <span class="linea"></span>
             <span class="linea"></span>
           </button>
-          
-          <a class="logo" href="../public/index.php">
-            <img src="../assets/iconos/logo.svg" alt="Proyecto UTA" height="50">
-            <h1>Estancia de Vida <span>de Nuestra Señora de Guadalupe</span></h1>
+
+          <a class="logo" href="../admin/index.php">
+            <img src="../assets/iconos/logo.svg" alt="Logo EDVDNSDG" height="50">
+            <h1>Administrador <span>Estancia de Vida</span></h1>
           </a>
         </div>
 
-        <div class="nav-acceso">
-          <a href="../public/login.php" class="acceso-link">
-            <img src="../assets/iconos/user-circle-svgrepo-com (1).svg" alt="Icono Acceso" class="icono-acceso">
-            <span>Acceder</span>
-          </a>
-        </div>
+   <div class="nav-acceso">
+  <a href="../control/auth.php?logout=true" class="acceso-link">
+    <img src="../assets/iconos/" alt="Cerrar sesión" class="icono-acceso">
+    <span>Salir</span>
+  </a>
+</div>
+
 
         <div class="menu-overlay" id="menu">
           <button class="cerrar-menu" aria-label="Cerrar Menú">×</button>
           <nav class="menu-navegacion">
-            <a href="../public/index.php">Inicio</a>
-            <a href="../public/nosotros.php">Nosotros</a>
-            <a href="../public/servicios.php">Servicios</a>
-            <a href="../public/actividades.php">Actividades</a>
-            <a href="../public/beneficios.php">Beneficios</a>
-            <a href="../public/contacto.php">Contacto</a>
+            <a href="../admin/index.php">Inicio</a>
+            <a href="../admin/registro.php">Registro</a>
+            <a href="../admin/medicos.php">Médicos</a>
+            <a href="../admin/expedientes.php">Expedientes</a>
           </nav>
         </div>
       </div>
     </header>
   </section>
 
-  <!-- Contenido principal de la página -->
-  <main>
-    <!-- Aquí iría el contenido de la página -->
-  </main>
-
   <script src="../assets/js/header.js"></script>
 </body>
 </html>
+
+
+  
