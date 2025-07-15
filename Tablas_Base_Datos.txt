@@ -11,13 +11,14 @@ CREATE TABLE usuarios (
     rol ENUM('familiar', 'admin') DEFAULT 'familiar'
 );
 
--- Tabla: paciente 
 CREATE TABLE pacientes (
-    nip VARCHAR(10) NOT NULL PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    correo VARCHAR(100) NOT NULL UNIQUE,
-    telefono VARCHAR(15),
-    FOREIGN KEY (nip) REFERENCES usuarios(nip)
+    id_paciente INT AUTO_INCREMENT PRIMARY KEY,  -- Clave primaria para identificar de manera única a cada paciente
+    nip VARCHAR(10) NOT NULL,  -- NIP del familiar
+    nombre VARCHAR(100) NOT NULL,  -- Nombre del paciente
+    telefono VARCHAR(15) DEFAULT NULL,  -- Teléfono del paciente
+    condiciones TEXT DEFAULT NULL,  -- Condiciones médicas del paciente
+    foto VARCHAR(255) DEFAULT NULL,  -- URL de la foto del paciente
+    FOREIGN KEY (nip) REFERENCES usuarios(nip) ON DELETE CASCADE  -- Relación con la tabla usuarios, por el campo nip
 );
 
 -- Tabla: medicos

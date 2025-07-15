@@ -1,38 +1,104 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f3f4f6; /* opcional: un fondo suave */
+}
+
 .panel-card {
-  background-color: white;
+  background-color: #fff;
   padding: 2rem;
   border-radius: 1rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  max-width: 700px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  max-width: 750px;
   margin: 2rem auto;
   text-align: center;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .card-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #111827;
-  margin-bottom: 1rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937; /* gris oscuro */
+  margin-bottom: 1.2rem;
 }
 
 .card-text {
-  font-size: 1rem;
-  color: #4b5563;
+  font-size: 1.05rem;
+  color: #374151; /* gris medio */
   margin-bottom: 1rem;
 }
 
 .card-button {
   background-color: #3b82f6;
   color: white;
-  padding: 0.5rem 1.25rem;
+  padding: 0.6rem 1.5rem;
   border-radius: 0.5rem;
   text-decoration: none;
   font-weight: 600;
+  border: none;
+  cursor: pointer;
   transition: background-color 0.3s ease;
-  display: inline-block;
   margin-top: 1rem;
 }
 
 .card-button:hover {
   background-color: #2563eb;
+}
+
+/* Estilo para los inputs del formulario */
+form input[type="text"],
+form input[type="date"] {
+  padding: 0.6rem;
+  width: 80%;
+  max-width: 400px;
+  margin-top: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  color: #111827;
+  outline: none;
+  transition: border 0.2s ease;
+}
+
+form input[type="text"]:focus,
+form input[type="date"]:focus {
+  border-color: #3b82f6;
+}
+
+/* Estilo para la tabla del menú */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+  background-color: #f9fafb;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+table th, table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+table th {
+  background-color: #e5e7eb;
+  color: #111827;
+  font-weight: 600;
+}
+
+table tr:nth-child(even) {
+  background-color: #f3f4f6;
+}
+
+table td {
+  color: #374151;
 }

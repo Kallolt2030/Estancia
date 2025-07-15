@@ -33,7 +33,6 @@ body.login-page {
     perspective: 1000px;
 }
 
-/* Puertas con más detalles */
 .door {
     position: absolute;
     width: 50%;
@@ -53,7 +52,6 @@ body.login-page {
     justify-content: center;
 }
 
-/* Textura tipo madera */
 .door::before {
     content: "";
     position: absolute;
@@ -71,7 +69,6 @@ body.login-page {
     pointer-events: none;
 }
 
-/* Manija dorada */
 .door::after {
     content: "";
     position: absolute;
@@ -105,7 +102,6 @@ body.login-page {
     left: 15px;
 }
 
-/* Formulario */
 .login-form-container {
     position: relative;
     width: 400px;
@@ -137,7 +133,6 @@ body.login-page {
     font-weight: bold;
 }
 
-/* Estilo atractivo para los inputs */
 .input-group input {
     padding: 14px;
     border: 2px solid #4CAF50;

@@ -30,7 +30,7 @@
         <!-- Sección de acceso para cerrar sesión -->
         <div class="nav-acceso">
           <a href="../control/auth.php?logout=true" class="acceso-link">
-            <img src="../assets/iconos/logout.svg" alt="Cerrar sesión" class="icono-acceso">
+            <img src="../assets/iconos/user-circle-svgrepo-com (1).svg" alt="Cerrar sesión" class="icono-acceso">
             <span>Salir</span>
           </a>
         </div>
