@@ -1,4 +1,3 @@
-/* Fondo general con gradiente y transparencia */
 * {
   margin: 0;
   padding: 0;
@@ -10,160 +9,455 @@ html {
 }
 
 #registro-uta-body {
-    background: linear-gradient(to right, #1b5e20, #aed581);
-    font-family: 'Segoe UI', sans-serif;
-    margin: 0;
-    padding: 0;
+  background: linear-gradient(to right, #2e7d32, #a5d6a7);
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 /* Contenedor principal */
 #registro-uta-container {
-    max-width: 1000px;
-    margin: 40px auto;
-    background: rgba(255, 255, 255, 0.08);
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  max-width: 1000px;
+  margin: 40px auto;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
 
 /* Título principal */
 .registro-glow-text {
-    color: #fff;
-    font-size: 2.5rem;
-    text-align: center;
-    text-shadow: 0 0 10px #cddc39, 0 0 20px #cddc39;
-    margin-bottom: 40px;
+  color: #fff;
+  font-size: 2.5rem;
+  text-align: center;
+  text-shadow: 0 0 10px #c5e1a5, 0 0 20px #c5e1a5;
+  margin-bottom: 40px;
 }
 
 /* Tarjetas */
 .registro-card {
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid #cddc39;
-    border-radius: 16px;
-    padding: 25px;
-    margin-bottom: 40px;
-    box-shadow: 0 0 15px rgba(255, 255, 0, 0.2);
-    color: #fff;
+  background: rgba(30, 30, 30, 0.5);
+  border: 1px solid #9ccc65;
+  border-radius: 16px;
+  padding: 25px;
+  margin-bottom: 40px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  color: #f0f0f0;
 }
 
 /* Subtítulos */
 .registro-subtitulo {
-    font-size: 1.6rem;
-    margin-bottom: 20px;
-    color: #ffff8d;
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+  color: #c5e1a5;
 }
 
 /* Formularios */
 .registro-form-group {
-    margin-bottom: 18px;
+  margin-bottom: 18px;
 }
 
 .registro-form-group label {
-    display: block;
-    margin-bottom: 6px;
-    color: #ffff8d;
+  display: block;
+  margin-bottom: 6px;
+  color: #ffff8d;
 }
 
 .registro-form-group input,
 .registro-form-group select,
 .registro-form-group textarea {
-    width: 100%;
-    padding: 10px 14px;
-    border-radius: 8px;
-    border: 1px solid #cddc39;
-    background-color: rgba(255, 255, 255, 0.15);
-    color: #fff;
-    outline: none;
-    backdrop-filter: blur(4px);
-    transition: box-shadow 0.3s ease;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #cddc39;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  outline: none;
+  backdrop-filter: blur(4px);
+  transition: box-shadow 0.3s ease;
 }
 
 .registro-form-group input:focus,
 .registro-form-group select:focus,
 .registro-form-group textarea:focus {
-    box-shadow: 0 0 10px #cddc39;
+  box-shadow: 0 0 10px #cddc39;
+}
+
+/* Placeholder visible */
+input::placeholder,
+textarea::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
 }
 
 /* Botones */
 .btn-generar-nip,
 .btn-submit-usuario,
 .btn-submit-paciente {
-    background: linear-gradient(135deg, #8bc34a, #fbc02d);
-    color: #000;
-    padding: 10px 20px;
-    border: none;
-    margin-top: 10px;
-    font-weight: bold;
-    border-radius: 10px;
-    cursor: pointer;
-    box-shadow: 0 0 8px rgba(255, 255, 0, 0.4);
-    transition: background 0.3s ease, box-shadow 0.3s ease;
+  background: linear-gradient(135deg, #9ccc65, #c5e1a5);
+  color: #1b1b1b;
+  padding: 10px 20px;
+  border: none;
+  margin-top: 10px;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .btn-generar-nip:hover,
 .btn-submit-usuario:hover,
 .btn-submit-paciente:hover {
-    background: linear-gradient(135deg, #dce775, #ffee58);
-    box-shadow: 0 0 15px #fff59d;
+  background: linear-gradient(135deg, #aed581, #dce775);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
 }
 
 /* Archivo de foto */
 .registro-file-wrapper {
+  position: relative;
+}
+
+.registro-file-label {
+  display: inline-block;
+  background: #fdd835;
+  color: #000;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.registro-file-wrapper input[type="file"] {
+  display: none;
+}
+
+/* Alertas */
+.alert {
+  padding: 12px;
+  border-radius: 8px;
+  margin: 15px 0;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.alert.success {
+  background-color: #dcedc8;
+  color: #33691e;
+}
+
+.alert.error {
+  background-color: #ffebee;
+  color: #b71c1c;
+}
+
+.alert .icon {
+  margin-right: 10px;
+}
+
+/* Diagnóstico y Foto */
+.diagnostico-box,
+.foto-box {
+  margin-top: 20px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 12px;
+  border: 1px dashed #c5e1a5;
+  border-radius: 10px;
+  color: #fff;
+}
+
+.foto-preview {
+  max-width: 100%;
+  height: auto;
+  margin-top: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+}
+
+/* Estilo select más claro */
+select {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+  border: 1px solid #ccc;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+select option {
+  background-color: #fff;
+  color: #333;
+}
+
+/* Alineación de los checkboxes con el texto */
+.registro-checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.registro-checkbox-group label {
+  display: flex;
+  align-items: center;
+  font-size: 1.4rem;
+  gap: 10px;
+  color: #fff;
+  border-radius: 6px;
+  padding: 6px 8px;
+  transition: background 0.3s ease;
+}
+
+.registro-checkbox-group input[type="checkbox"] {
+  accent-color: #cddc39;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* Hover sutil para checkbox */
+.registro-checkbox-group label:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
+
+/* Otra condición */
+#otra_condicion_input {
+  padding: 8px;
+  border: 1px solid #cddc39;
+  border-radius: 8px;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  display: none; /* Se oculta inicialmente */
+}
+
+#otra_condicion_input.show {
+  display: block; /* Se muestra solo cuando "Otra" está marcado */
+}
+
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body#registro-uta-body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to right, #2e7d32, #a5d6a7);
+    color: #333;
+    padding: 2rem;
+}
+
+.registro-container {
+    max-width: 1100px;
+    margin: auto;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.registro-glow-text {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: #1b5e20;
+    text-shadow: 1px 1px 2px #a5d6a7;
+}
+
+.registro-card {
+    margin-bottom: 2rem;
+    border-top: 3px solid #388e3c;
+    padding-top: 1rem;
+}
+
+.registro-subtitulo {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #2e7d32;
+}
+
+/* Tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+th, td {
+    padding: 10px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #a5d6a7;
+    color: #1b5e20;
+    font-weight: bold;
+}
+
+tr:hover {
+    background-color: #f1f8e94a;
+}
+
+.btn-editar,
+.btn-eliminar {
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-size: 0.95rem;
+    transition: background-color 0.3s;
+    margin-right: 5px;
+}
+
+.btn-editar {
+    background-color: #0288d1;
+    color: white;
+}
+
+.btn-editar:hover {
+    background-color: #0277bd;
+}
+
+.btn-eliminar {
+    background-color: #c62828;
+    color: white;
+}
+
+.btn-eliminar:hover {
+    background-color: #b71c1c;
+}
+
+/* Formulario de edición oscuro y legible */
+.formulario-edicion {
+  background: rgba(30, 30, 30, 0.6);
+  padding: 2rem;
+  border-radius: 12px;
+  margin-top: 2rem;
+  box-shadow: 0 0 15px rgba(200, 255, 200, 0.15);
+  color: #f0f0f0;
+  border: 1px solid #9ccc65;
+}
+
+.formulario-edicion h3 {
+  margin-bottom: 1rem;
+  color: #c5e1a5;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.registro-form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #ffff8d;
+}
+
+.registro-form-group input,
+.registro-form-group select,
+.registro-form-group textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #cddc39;
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 1.5rem;
+  backdrop-filter: blur(4px);
+  transition: box-shadow 0.3s ease;
+}
+
+.registro-form-group input:focus,
+.registro-form-group select:focus,
+.registro-form-group textarea:focus {
+  box-shadow: 0 0 10px #cddc39;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
+}
+
+
+.registro-checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 0.5rem;
+}
+
+.registro-checkbox-group label {
+    font-weight: normal;
+    color: #ffffff;
+}
+
+.foto-actual {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border: 3px solid #66bb6a;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* Archivo */
+.registro-file-wrapper {
+    margin-top: 10px;
     position: relative;
 }
 
 .registro-file-label {
     display: inline-block;
-    background: #fdd835;
-    color: #000;
-    padding: 8px 12px;
-    border-radius: 8px;
+    padding: 8px 15px;
+    background-color: #43a047;
+    color: #fff;
+    border-radius: 6px;
     cursor: pointer;
-    font-weight: bold;
+    font-size: 0.95rem;
 }
 
-.registro-file-wrapper input[type="file"] {
+.registro-file-label:hover {
+    background-color: #388e3c;
+}
+
+input[type="file"] {
     display: none;
 }
 
-/* Alertas */
-.alert {
-    padding: 12px;
+/* Botones */
+.btn-submit-usuario,
+.btn-submit-paciente,
+.btn-cancelar {
+    padding: 10px 18px;
+    border: none;
     border-radius: 8px;
-    margin: 15px 0;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-}
-
-.alert.success {
-    background-color: #dcedc8;
-    color: #33691e;
-}
-
-.alert.error {
-    background-color: #ffebee;
-    color: #b71c1c;
-}
-
-.alert .icon {
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 1rem;
     margin-right: 10px;
 }
 
-/* Diagnóstico y Foto */
-.diagnostico-box, .foto-box {
-    margin-top: 20px;
-    background: rgba(255, 255, 255, 0.08);
-    padding: 12px;
-    border: 1px dashed #ffff8d;
-    border-radius: 10px;
-    color: #fff;
+.btn-submit-usuario,
+.btn-submit-paciente {
+    background-color: #388e3c;
+    color: white;
 }
 
-.foto-preview {
-    max-width: 100%;
-    height: auto;
-    margin-top: 10px;
-    border-radius: 10px;
-    box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+.btn-submit-usuario:hover,
+.btn-submit-paciente:hover {
+    background-color: #2e7d32;
+}
+
+.btn-cancelar {
+    background-color: #9e9e9e;
+    color: white;
+    text-decoration: none;
+}
+
+.btn-cancelar:hover {
+    background-color: #757575;
 }

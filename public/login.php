@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Conexión a la base de datos
 include '../control/bd.php'; // Asegúrate de que la ruta sea correcta
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

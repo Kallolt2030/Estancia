@@ -26,7 +26,7 @@
 
    <div class="nav-acceso">
   <a href="../control/auth.php?logout=true" class="acceso-link">
-    <img src="../assets/iconos/" alt="Cerrar sesión" class="icono-acceso">
+    <img src="../assets/iconos/user-circle-svgrepo-com (1).svg" alt="Cerrar sesión" class="icono-acceso">
     <span>Salir</span>
   </a>
 </div>
@@ -39,6 +39,7 @@
             <a href="../admin/registro.php">Registro</a>
             <a href="../admin/medicos.php">Médicos</a>
             <a href="../admin/expedientes.php">Expedientes</a>
+            <a href="../admin/editar.php">Editar usuarios o pacientes</a>
           </nav>
         </div>
       </div>
