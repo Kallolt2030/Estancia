@@ -1,9 +1,8 @@
 <?php
 session_start();
 include '../includes/headerDash.php';
-include '../control/bd.php'; // Asegúrate de que se incluye correctamente
+include '../control/bd.php';
 
-// Asegúrate de que el usuario está logueado
 if (!isset($_SESSION['nip']) || $_SESSION['rol'] !== 'familiar') {
     header('Location: ../index.php');
     exit;
@@ -11,62 +10,106 @@ if (!isset($_SESSION['nip']) || $_SESSION['rol'] !== 'familiar') {
 
 $nip = $_SESSION['nip'];
 $nombre = $_SESSION['nombre'];
+
+// Obtener pacientes relacionados con el familiar
+$stmt = $pdo->prepare("SELECT id_paciente, nombre FROM pacientes WHERE nip = ?");
+$stmt->execute([$nip]);
+$pacientes = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Consulta de Comidas</title>
-  <link rel="stylesheet" href="../assets/css/cocina.css">
+    <meta charset="UTF-8">
+    <title>Menú del Residente</title>
+    <link rel="stylesheet" href="../assets/css/cocina.css">
 </head>
 <body>
-  <div class="panel-card">
-    <h1 class="card-title">Consulta de Menú por Fecha</h1>
-    <p class="card-text">Hola <strong><?= htmlspecialchars($nombre) ?></strong>, elige una fecha para consultar tu menú.</p>
+<div class="contenedor">
 
-    <!-- Formulario para elegir fecha -->
-    <form method="POST">
-      <label for="fecha">Selecciona una fecha:</label>
-      <input type="date" name="fecha" required>
-      <button class="card-button" type="submit" name="consultar">Consultar Menú</button>
-    </form>
+    <!-- Panel lateral izquierdo -->
+    <aside class="menu-lateral">
+        <button onclick="alert('Función no disponible aún')"> Menú Semana Anterior</button>
+        <button onclick="alert('Función no disponible aún')">Menú Día Anterior</button>
+        <button onclick="alert('Función no disponible aún')">Ver por tipo de comida</button>
+    </aside>
 
-    <?php
-    if (isset($_POST["consultar"]) && !empty($_POST["fecha"])) {
-      $fecha = $_POST["fecha"];
+    <!-- Panel central -->
+    <section class="contenido-central">
+        <div class="menu-dia">
+            <h2>Consulta de Menú por Fecha</h2>
+            <p>Hola <strong><?= htmlspecialchars($nombre) ?></strong>, elige una fecha y un paciente para consultar el menú.</p>
 
-      // Verificamos si el usuario comió ese día
-      $stmt = $pdo->prepare("SELECT * FROM consumo_comidas WHERE nip = ? AND fecha = ?");
-      $stmt->execute([$nip, $fecha]);
-      $resConsumo = $stmt->fetchAll();
+            <!-- Formulario -->
+            <form method="POST">
+                <label for="paciente_id">Paciente:</label>
+                <select name="paciente_id" required>
+                    <option value="">Seleccione un paciente</option>
+                    <?php foreach ($pacientes as $p): ?>
+                        <option value="<?= $p['id_paciente'] ?>">
+                            <?= htmlspecialchars($p['nombre']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
 
-      if (count($resConsumo) > 0) {
-        // Obtener menú del día
-        $stmt2 = $pdo->prepare("SELECT desayuno, comida, cena FROM cocina WHERE fecha = ?");
-        $stmt2->execute([$fecha]);
-        $resMenu = $stmt2->fetch();
+                <label for="fecha">Fecha:</label>
+                <input type="date" name="fecha" required>
+                <button type="submit" name="consultar">Consultar Menú</button>
+            </form>
 
-        if ($resMenu) {
-          echo "<h3 class='card-text'>Menú del día: " . htmlspecialchars($fecha) . "</h3>";
-          echo "<table class='card-text' style='margin: auto; text-align: left;'>
-                  <tr><th>Desayuno</th><th>Comida</th><th>Cena</th></tr>
-                  <tr>
-                    <td>{$resMenu['desayuno']}</td>
-                    <td>{$resMenu['comida']}</td>
-                    <td>{$resMenu['cena']}</td>
-                  </tr>
-                </table>";
-        } else {
-          echo "<p class='card-text'>No hay menú registrado para esa fecha.</p>";
-        }
-      } else {
-        echo "<p class='card-text'>No hay registro de consumo para ese día.</p>";
-      }
-    }
-    ?>
+            <?php
+            if (isset($_POST["consultar"]) && !empty($_POST["fecha"]) && !empty($_POST["paciente_id"])) {
+                $fecha = $_POST["fecha"];
+                $paciente_id = $_POST["paciente_id"];
 
-    <a class="card-button" href="../dashboard/index.php">Volver</a>
-  </div>
+                // Obtener consumo del paciente para la fecha
+                $stmt = $pdo->prepare("SELECT tipo_comida, hora FROM consumo_comidas WHERE id_paciente = ? AND fecha = ?");
+                $stmt->execute([$paciente_id, $fecha]);
+                $consumos = $stmt->fetchAll();
+
+                if ($consumos) {
+                    // Obtener el menú del día
+                    $stmt2 = $pdo->prepare("SELECT desayuno, comida, cena FROM cocina WHERE fecha = ?");
+                    $stmt2->execute([$fecha]);
+                    $menu = $stmt2->fetch();
+
+                    echo "<h3>Menú del día: " . htmlspecialchars($fecha) . "</h3>";
+                    echo "<table>
+                            <tr><th>Tipo</th><th>Hora</th><th>Comida Registrada</th></tr>";
+
+                    foreach ($consumos as $c) {
+                        $tipo = $c['tipo_comida'];
+                        $hora = $c['hora'];
+                        $detalle = isset($menu[$tipo]) ? htmlspecialchars($menu[$tipo]) : 'No registrado';
+                        echo "<tr>
+                                <td>" . ucfirst($tipo) . "</td>
+                                <td>$hora</td>
+                                <td>$detalle</td>
+                              </tr>";
+                    }
+
+                    echo "</table>";
+                } else {
+                    echo "<p>No hay registro de consumo para ese día.</p>";
+                }
+            }
+            ?>
+
+            <a class="card-button" href="../dashboard/index.php">← Volver al panel</a>
+        </div>
+    </section>
+
+    <!-- Panel derecho con horarios -->
+    <aside class="horarios-comida">
+        <h3> Horarios de comida</h3>
+        <ul>
+            <li><strong>Desayuno:</strong> 08:00 - 09:00</li>
+            <li><strong>Colación:</strong> 11:00 - 11:30</li>
+            <li><strong>Comida:</strong> 13:00 - 14:00</li>
+            <li><strong>Cena:</strong> 18:00 - 19:00</li>
+        </ul>
+    </aside>
+
+</div>
 </body>
 </html>
