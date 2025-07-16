@@ -21,6 +21,16 @@ CREATE TABLE pacientes (
     FOREIGN KEY (nip) REFERENCES usuarios(nip) ON DELETE CASCADE  -- Relación con la tabla usuarios, por el campo nip
 );
 
+CREATE TABLE consumo_comidas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_paciente INT NOT NULL,
+    fecha DATE NOT NULL,
+    hora TIME NOT NULL,
+    tipo_comida ENUM('desayuno', 'comida', 'cena') NOT NULL,
+    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente) ON DELETE CASCADE
+);
+
+
 -- Tabla: medicos
 CREATE TABLE medicos (
     id INT AUTO_INCREMENT PRIMARY KEY,
