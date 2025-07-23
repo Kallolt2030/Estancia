@@ -8,7 +8,7 @@ CREATE TABLE usuarios (
     nombre VARCHAR(100) NOT NULL,
     correo VARCHAR(100) NOT NULL UNIQUE,
     telefono VARCHAR(15),
-    rol ENUM('familiar', 'admin') DEFAULT 'familiar'
+    rol ENUM('familiar', 'admin', 'cuidador', 'medico', 'cocina') NOT NULL DEFAULT 'familiar'
 );
 
 CREATE TABLE pacientes (
@@ -34,19 +34,66 @@ CREATE TABLE consumo_comidas (
 -- Tabla: medicos
 CREATE TABLE medicos (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    especialidad VARCHAR(100) NOT NULL,
+    nip VARCHAR(20),
+    nombre VARCHAR(100),
     correo VARCHAR(100),
-    telefono VARCHAR(20)
+    telefono VARCHAR(20),
+    especialidad VARCHAR(100) DEFAULT 'General',
+    FOREIGN KEY (nip) REFERENCES usuarios(nip) ON DELETE CASCADE
 );
+
+-- Tabla de cuidadores con más datos
+CREATE TABLE cuidadores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nip VARCHAR(20),
+    nombre VARCHAR(100),
+    correo VARCHAR(100),
+    telefono VARCHAR(20),
+    turno VARCHAR(100) DEFAULT 'Diurno',
+    FOREIGN KEY (nip) REFERENCES usuarios(nip) ON DELETE CASCADE
+);
+
 
 -- Tabla: expedientes
 CREATE TABLE expedientes (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    paciente_nombre VARCHAR(100) NOT NULL,
+    id_paciente INT NOT NULL,
     fecha_ultima_revision DATE,
-    notas TEXT
+    notas TEXT,
+    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente) ON DELETE CASCADE
 );
+
+DELIMITER //
+
+CREATE TRIGGER trigger_insert_medico
+AFTER INSERT ON usuarios
+FOR EACH ROW
+BEGIN
+    IF NEW.rol = 'medico' THEN
+        INSERT INTO medicos (nip, nombre, correo, telefono)
+        VALUES (NEW.nip, NEW.nombre, NEW.correo, NEW.telefono);
+    END IF;
+END;
+//
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER trigger_insert_cuidador
+AFTER INSERT ON usuarios
+FOR EACH ROW
+BEGIN
+    IF NEW.rol = 'cuidador' THEN
+        INSERT INTO cuidadores (nip, nombre, correo, telefono)
+        VALUES (NEW.nip, NEW.nombre, NEW.correo, NEW.telefono);
+    END IF;
+END;
+//
+
+DELIMITER ;
+
+
 
 -- Tabla: notificaciones médicas
 CREATE TABLE notificaciones (
@@ -54,14 +101,6 @@ CREATE TABLE notificaciones (
     titulo VARCHAR(100) NOT NULL,
     mensaje TEXT NOT NULL,
     fecha DATETIME DEFAULT CURRENT_TIMESTAMP
-);
-
--- Tabla: cuidadores
-CREATE TABLE cuidadores (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    turno ENUM('mañana', 'tarde', 'noche') NOT NULL,
-    contacto VARCHAR(100)
 );
 
 -- Tabla: cocina (menú diario)
@@ -72,6 +111,52 @@ CREATE TABLE cocina (
     comida VARCHAR(255),
     cena VARCHAR(255)
 );
+
+CREATE TABLE reportes_cuidadores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_paciente INT NOT NULL,
+    id_cuidador INT NOT NULL,
+    fecha DATE NOT NULL,
+    observaciones TEXT,
+    comio BOOLEAN NOT NULL,
+    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente) ON DELETE CASCADE,
+    FOREIGN KEY (id_cuidador) REFERENCES cuidadores(id) ON DELETE CASCADE
+);
+
+CREATE TABLE reportes_cocina (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fecha DATE NOT NULL,
+    ingredientes_utilizados TEXT,
+    notas TEXT
+);
+
+CREATE TABLE reportes_medicos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_paciente INT NOT NULL,
+    id_medico INT NOT NULL,
+    fecha DATE NOT NULL,
+    sueno TEXT,
+    dieta TEXT,
+    esfera_emocional TEXT,
+    memoria TEXT,
+    micciones TEXT,
+    evacuaciones TEXT,
+    eventualidades TEXT,
+    signos_vitales TEXT,
+    analisis TEXT,
+    plan TEXT,
+    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente) ON DELETE CASCADE,
+    FOREIGN KEY (id_medico) REFERENCES medicos(id) ON DELETE CASCADE
+);
+
+CREATE TABLE cuidadores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    turno ENUM('mañana', 'tarde', 'noche') NOT NULL,
+    contacto VARCHAR(100)
+);
+
+
 
 ////
 Usuario administrador de ejemplo (opcional)

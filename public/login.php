@@ -1,43 +1,50 @@
 <?php
 session_start();
-
-include '../control/bd.php'; // Asegúrate de que la ruta sea correcta
+include '../control/bd.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nip = $_POST['nip'];
 
     try {
-        // Consulta el nip usando PDO
         $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE nip = :nip");
         $stmt->bindParam(':nip', $nip, PDO::PARAM_STR);
         $stmt->execute();
-        
-        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
 
-        if ($resultado) {
-            $_SESSION['nip'] = $resultado['nip'];
-            $_SESSION['nombre'] = $resultado['nombre'];
-            $_SESSION['rol'] = $resultado['rol'];
+        if ($usuario) {
+            $_SESSION['nip'] = $usuario['nip'];
+            $_SESSION['nombre'] = $usuario['nombre'];
+            $_SESSION['rol'] = $usuario['rol'];
 
-            if ($resultado['rol'] === 'admin') {
-                header('Location: ../admin/registro.php');
-            } else {
-                header('Location: ../dashboard/index.php');
+            switch ($usuario['rol']) {
+                case 'admin':
+                    header('Location: ../admin/registro.php');
+                    break;
+                case 'familiar':
+                    header('Location: ../dashboard/index.php');
+                    break;
+                case 'medico':
+                case 'cuidador':
+                case 'cocina':
+                    header('Location: ../trabajadores/formExp.php');
+                    break;
+                default:
+                    $error = "Rol desconocido.";
             }
             exit;
         } else {
             $error = "NIP incorrecto o no registrado.";
         }
 
-        $stmt->closeCursor();
     } catch (PDOException $e) {
-        // Captura cualquier error de la base de datos
         die("Error al ejecutar la consulta: " . $e->getMessage());
     }
 }
 
 include '../includes/header.php';
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">

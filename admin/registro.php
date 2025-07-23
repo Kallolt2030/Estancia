@@ -190,6 +190,9 @@ $usuarios = $usuarios_stmt->fetchAll();
         <select id="rol" name="rol">
             <option value="familiar">Familiar</option>
             <option value="admin">Administrador</option>
+            <option value="cuidador">Cuidador</option>
+            <option value="medico">Medico</option>
+            <option value="cocina">Cocina</option>
         </select>
     </div>
 
