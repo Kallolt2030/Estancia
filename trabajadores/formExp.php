@@ -183,16 +183,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta charset="UTF-8">
   <title>Formulario de Reportes</title>
   <link rel="stylesheet" href="../assets/css/formTrab.css">
-  <style>
-    .error { color: red; }
-    .success { color: green; }
-    .form-section { display: none; margin-top: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
-    .required:after { content: " *"; color: red; }
-    select, input, textarea { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px; }
-    button { background-color: #4CAF50; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; }
-    button:hover { background-color: #45a049; }
-    label { font-weight: bold; margin-top: 10px; display: block; }
-  </style>
 </head>
 <body>
 
