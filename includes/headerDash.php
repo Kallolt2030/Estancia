@@ -28,10 +28,9 @@
         </div>
 
         <!-- Sección de acceso para cerrar sesión -->
-        <div class="nav-acceso">
-          <a href="../control/auth.php?logout=true" class="acceso-link">
-            <img src="../assets/iconos/user-circle-svgrepo-com (1).svg" alt="Cerrar sesión" class="icono-acceso">
-            <span>Salir</span>
+        <div class="nav-salida">
+          <a href="../control/auth.php?logout=true" class="salida-link">
+            <img src="../assets/iconos/exit-exit-svgrepo-com.svg" alt="Cerrar sesión" class="icono-salida">
           </a>
         </div>
 

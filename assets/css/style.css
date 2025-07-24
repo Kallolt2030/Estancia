@@ -61,6 +61,18 @@ body {
   animation: moveBackground 20s linear infinite alternate;
 }
 
+.icono-salida {
+  width: 60px;  /* Tamaño más grande del ícono */
+  height: 60px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.icono-salida:hover {
+  transform: scale(1.2); /* Aumenta el tamaño al pasar el mouse */
+  cursor: pointer;
+}
+
+
 .overlay {
   position: absolute;
   inset: 0;
