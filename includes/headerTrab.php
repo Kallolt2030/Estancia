@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel de Usuario | Estancia de Vida</title>
+  <title>Panel de Trabajador | Estancia de Vida</title>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
@@ -23,7 +23,7 @@
           <!-- Logo de la página -->
           <a class="logo" href="index.php">
             <img src="../assets/iconos/logo.svg" alt="Logo Estancia de Vida" height="50">
-            <h1>Panel de Usuario <span>Estancia de Vida</span></h1>
+            <h1>Panel de Trabajador <span>Estancia de Vida</span></h1>
           </a>
         </div>
 
@@ -38,11 +38,7 @@
         <div class="menu-overlay" id="menu">
           <button class="cerrar-menu" aria-label="Cerrar Menú">×</button>
           <nav class="menu-navegacion">
-            <a href="../dashboard/index.php">Inicio</a>
-            <a href="../dashboard/cocina.php">Cocina</a>
-            <a href="../dashboard/cuidadores.php">Cuidadores</a>
-            <a href="../dashboard/expediente.php">Expedientes</a>
-            <a href="../dashboard/notificaciones.php">Notificaciones</a>
+            <a href="../trabajadores/formExp.php">Inicio</a>
           </nav>
         </div>
       </div>
