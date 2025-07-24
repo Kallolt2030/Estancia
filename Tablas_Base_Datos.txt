@@ -4,11 +4,11 @@ USE Estancia;
 
 -- Tabla: usuarios (familiares, admins)
 CREATE TABLE usuarios (
-    nip VARCHAR(10) NOT NULL PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    correo VARCHAR(100) NOT NULL UNIQUE,
-    telefono VARCHAR(15),
-    rol ENUM('familiar', 'admin', 'cuidador', 'medico', 'cocina') NOT NULL DEFAULT 'familiar'
+  nip VARCHAR(20) PRIMARY KEY,
+  nombre VARCHAR(100),
+  correo VARCHAR(100),
+  telefono VARCHAR(20),
+  rol ENUM('familiar', 'admin', 'cuidador', 'medico', 'enfermeria', 'kinesica') NOT NULL DEFAULT 'familiar'
 );
 
 CREATE TABLE pacientes (
@@ -93,6 +93,44 @@ END;
 
 DELIMITER ;
 
+CREATE TABLE enfermeria (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nip VARCHAR(20),
+  nombre VARCHAR(100),
+  correo VARCHAR(100),
+  FOREIGN KEY (nip) REFERENCES usuarios(nip)
+);
+
+CREATE TABLE kinesica (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nip VARCHAR(20),
+  nombre VARCHAR(100),
+  correo VARCHAR(100),
+  FOREIGN KEY (nip) REFERENCES usuarios(nip)
+);
+
+
+DELIMITER $$
+CREATE TRIGGER insertar_enfermeria AFTER INSERT ON usuarios
+FOR EACH ROW
+BEGIN
+  IF NEW.rol = 'enfermeria' THEN
+    INSERT INTO enfermeria (nip, nombre, correo) 
+    VALUES (NEW.nip, NEW.nombre, NEW.correo);
+  END IF;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER insertar_kinesica AFTER INSERT ON usuarios
+FOR EACH ROW
+BEGIN
+  IF NEW.rol = 'kinesica' THEN
+    INSERT INTO kinesica (nip, nombre, correo) 
+    VALUES (NEW.nip, NEW.nombre, NEW.correo);
+  END IF;
+END$$
+DELIMITER ;
 
 
 -- Tabla: notificaciones médicas
