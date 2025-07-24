@@ -173,19 +173,45 @@ CREATE TABLE reportes_medicos (
     id_paciente INT NOT NULL,
     id_medico INT NOT NULL,
     fecha DATE NOT NULL,
-    sueno TEXT,
-    dieta TEXT,
-    esfera_emocional TEXT,
-    memoria TEXT,
-    micciones TEXT,
-    evacuaciones TEXT,
-    eventualidades TEXT,
-    signos_vitales TEXT,
-    analisis TEXT,
-    plan TEXT,
+    sueno TEXT COMMENT 'Calidad y duración del sueño',
+    dieta TEXT COMMENT 'Hábitos alimenticios y dieta',
+    esfera_emocional TEXT COMMENT 'Estado emocional del paciente',
+    memoria TEXT COMMENT 'Evaluación de memoria',
+    micciones TEXT COMMENT 'Patrón miccional',
+    evacuaciones TEXT COMMENT 'Patrón evacuatorio',
+    eventualidades TEXT COMMENT 'Eventos relevantes ocurridos',
+    
+    -- Signos vitales (nuevos campos estructurados)
+    ta_sistolica SMALLINT COMMENT 'Tensión arterial sistólica (mmHg)',
+    ta_diastolica SMALLINT COMMENT 'Tensión arterial diastólica (mmHg)',
+    fc SMALLINT COMMENT 'Frecuencia cardíaca (lpm)',
+    fr SMALLINT COMMENT 'Frecuencia respiratoria (rpm)',
+    sat_o2 TINYINT COMMENT 'Saturación de O2 (%)',
+    temp DECIMAL(3,1) COMMENT 'Temperatura (°C)',
+    peso DECIMAL(5,2) COMMENT 'Peso (kg)',
+    talla SMALLINT COMMENT 'Talla (cm)',
+    imc DECIMAL(4,1) COMMENT 'Índice de masa corporal',
+    glucemia SMALLINT COMMENT 'Glucemia (mg/dL)',
+    
+    -- Campos adicionales para signos vitales
+    otros_signos TEXT COMMENT 'Otros signos vitales no estandarizados',
+    
+    -- Campos existentes
+    analisis TEXT COMMENT 'Análisis médico',
+    plan TEXT COMMENT 'Plan de tratamiento',
+    
+    -- Auditoría
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    actualizado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
     FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente) ON DELETE CASCADE,
-    FOREIGN KEY (id_medico) REFERENCES medicos(id) ON DELETE CASCADE
-);
+    FOREIGN KEY (id_medico) REFERENCES medicos(id) ON DELETE CASCADE,
+    
+    -- Índices para búsquedas frecuentes
+    INDEX idx_fecha (fecha),
+    INDEX idx_paciente (id_paciente),
+    INDEX idx_medico (id_medico)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Registros médicos de pacientes';
 
 CREATE TABLE cuidadores (
     id INT AUTO_INCREMENT PRIMARY KEY,

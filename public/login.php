@@ -27,6 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 case 'medico':
                 case 'cuidador':
                 case 'cocina':
+                case 'enfermeria':
+                case 'kinesica':    
                     header('Location: ../trabajadores/formExp.php');
                     break;
                 default:
