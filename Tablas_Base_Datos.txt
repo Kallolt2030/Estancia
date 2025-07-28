@@ -2,39 +2,34 @@
 CREATE DATABASE Estancia CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE Estancia;
 
--- Tabla: usuarios (familiares, admins)
+-- Crear base de datos
+CREATE DATABASE IF NOT EXISTS Estancia CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE Estancia;
+
+-- 1. Tabla base: usuarios (todos los roles)
 CREATE TABLE usuarios (
-  nip VARCHAR(20) PRIMARY KEY,
-  nombre VARCHAR(100),
-  correo VARCHAR(100),
-  telefono VARCHAR(20),
-  rol ENUM('familiar', 'admin', 'cuidador', 'medico', 'enfermeria', 'kinesica') NOT NULL DEFAULT 'familiar'
+    nip VARCHAR(20) PRIMARY KEY,
+    nombre VARCHAR(100),
+    correo VARCHAR(100),
+    telefono VARCHAR(20),
+    rol ENUM('familiar', 'admin', 'cuidador', 'cocina', 'medico', 'enfermeria', 'kinesica') NOT NULL DEFAULT 'familiar'
 );
 
+-- 2. Tabla pacientes (depende de usuarios)
 CREATE TABLE pacientes (
-    id_paciente INT AUTO_INCREMENT PRIMARY KEY,  -- Clave primaria para identificar de manera única a cada paciente
-    nip VARCHAR(10) NOT NULL,  -- NIP del familiar
-    nombre VARCHAR(100) NOT NULL,  -- Nombre del paciente
-    telefono VARCHAR(15) DEFAULT NULL,  -- Teléfono del paciente
-    condiciones TEXT DEFAULT NULL,  -- Condiciones médicas del paciente
-    foto VARCHAR(255) DEFAULT NULL,  -- URL de la foto del paciente
-    FOREIGN KEY (nip) REFERENCES usuarios(nip) ON DELETE CASCADE  -- Relación con la tabla usuarios, por el campo nip
+    id_paciente INT AUTO_INCREMENT PRIMARY KEY,
+    nip VARCHAR(20) NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
+    telefono VARCHAR(15),
+    condiciones TEXT,
+    foto VARCHAR(255),
+    FOREIGN KEY (nip) REFERENCES usuarios(nip) ON DELETE CASCADE
 );
 
-CREATE TABLE consumo_comidas (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    id_paciente INT NOT NULL,
-    fecha DATE NOT NULL,
-    hora TIME NOT NULL,
-    tipo_comida ENUM('desayuno', 'comida', 'cena') NOT NULL,
-    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente) ON DELETE CASCADE
-);
-
-
--- Tabla: medicos
+-- 3. Tablas dependientes de usuarios (según rol)
 CREATE TABLE medicos (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nip VARCHAR(20),
+    nip VARCHAR(20) UNIQUE,
     nombre VARCHAR(100),
     correo VARCHAR(100),
     telefono VARCHAR(20),
@@ -42,10 +37,9 @@ CREATE TABLE medicos (
     FOREIGN KEY (nip) REFERENCES usuarios(nip) ON DELETE CASCADE
 );
 
--- Tabla de cuidadores con más datos
 CREATE TABLE cuidadores (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nip VARCHAR(20),
+    nip VARCHAR(20) UNIQUE,
     nombre VARCHAR(100),
     correo VARCHAR(100),
     telefono VARCHAR(20),
@@ -53,8 +47,79 @@ CREATE TABLE cuidadores (
     FOREIGN KEY (nip) REFERENCES usuarios(nip) ON DELETE CASCADE
 );
 
+CREATE TABLE cocineros (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nip VARCHAR(20) UNIQUE,
+    nombre VARCHAR(100),
+    correo VARCHAR(100),
+    telefono VARCHAR(20),
+    FOREIGN KEY (nip) REFERENCES usuarios(nip) ON DELETE CASCADE
+);
 
--- Tabla: expedientes
+CREATE TABLE enfermeria (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nip VARCHAR(20) UNIQUE,
+    nombre VARCHAR(100),
+    correo VARCHAR(100),
+    FOREIGN KEY (nip) REFERENCES usuarios(nip)
+);
+
+CREATE TABLE kinesica (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nip VARCHAR(20) UNIQUE,
+    nombre VARCHAR(100),
+    correo VARCHAR(100),
+    FOREIGN KEY (nip) REFERENCES usuarios(nip)
+);
+
+-- 4. Tabla cocina (menú diario)
+CREATE TABLE cocina (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fecha DATE NOT NULL,
+    desayuno VARCHAR(255),
+    comida VARCHAR(255),
+    cena VARCHAR(255)
+);
+
+-- 5. Ingredientes y uso
+CREATE TABLE ingredientes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL UNIQUE,
+    cantidad_disponible FLOAT NOT NULL DEFAULT 0,
+    unidad ENUM(
+        'gramos', 'kilogramos', 'miligramos',
+        'litros', 'mililitros', 'centilitros',
+        'unidad', 'piezas', 'docena', 'paquete',
+        'botella', 'lata', 'galones', 'libras', 'onzas'
+    ) NOT NULL DEFAULT 'unidad'
+);
+
+CREATE TABLE reportes_cocina (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fecha DATE NOT NULL,
+    notas TEXT
+);
+
+CREATE TABLE ingredientes_usados (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_reporte INT NOT NULL,
+    id_ingrediente INT NOT NULL,
+    cantidad_utilizada FLOAT NOT NULL,
+    FOREIGN KEY (id_reporte) REFERENCES reportes_cocina(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_ingrediente) REFERENCES ingredientes(id) ON DELETE CASCADE
+);
+
+-- 6. Reportes diversos
+CREATE TABLE consumo_comidas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_paciente INT NOT NULL,
+    fecha DATE NOT NULL,
+    hora TIME NOT NULL,
+    tipo_comida ENUM('desayuno', 'comida', 'cena') NOT NULL,
+    platillo_consumido VARCHAR(255),
+    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente) ON DELETE CASCADE
+);
+
 CREATE TABLE expedientes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_paciente INT NOT NULL,
@@ -63,7 +128,85 @@ CREATE TABLE expedientes (
     FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente) ON DELETE CASCADE
 );
 
-DELIMITER //
+CREATE TABLE notificaciones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(100) NOT NULL,
+    mensaje TEXT NOT NULL,
+    fecha DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE reportes_cuidadores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_paciente INT NOT NULL,
+    id_cuidador VARCHAR(20) NOT NULL,
+    fecha DATE NOT NULL,
+    observaciones TEXT,
+    comio BOOLEAN NOT NULL,
+    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente) ON DELETE CASCADE,
+    FOREIGN KEY (id_cuidador) REFERENCES usuarios(nip) ON DELETE CASCADE
+);
+
+CREATE TABLE reporte_kinesico (
+    id_reporte INT AUTO_INCREMENT PRIMARY KEY,
+    id_paciente INT NOT NULL,
+    id_kinesiologo VARCHAR(20) NOT NULL,
+    fecha DATE NOT NULL,
+    ejercicios TEXT,
+    duracion INT,
+    observaciones TEXT,
+    progreso TEXT,
+    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente) ON DELETE CASCADE,
+    FOREIGN KEY (id_kinesiologo) REFERENCES usuarios(nip) ON DELETE CASCADE
+);
+
+CREATE TABLE reportes_enfermeria (
+    id_reporte INT AUTO_INCREMENT PRIMARY KEY,
+    id_paciente INT NOT NULL,
+    id_enfermero VARCHAR(20) NOT NULL,
+    fecha DATE NOT NULL,
+    signos_vitales TEXT,
+    medicamentos INT,
+    procedimientos TEXT,
+    observaciones TEXT,
+    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente) ON DELETE CASCADE,
+    FOREIGN KEY (id_enfermero) REFERENCES usuarios(nip) ON DELETE CASCADE
+);
+
+CREATE TABLE reportes_medicos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_paciente INT NOT NULL,
+    id_medico INT NOT NULL,
+    fecha DATE NOT NULL,
+    sueno TEXT,
+    dieta TEXT,
+    esfera_emocional TEXT,
+    memoria TEXT,
+    micciones TEXT,
+    evacuaciones TEXT,
+    ta_sistolica SMALLINT,
+    ta_diastolica SMALLINT,
+    fc SMALLINT,
+    fr SMALLINT,
+    sat_o2 TINYINT,
+    temp DECIMAL(3,1),
+    peso DECIMAL(5,2),
+    talla SMALLINT,
+    imc DECIMAL(4,1),
+    glucemia SMALLINT,
+    otros_signos TEXT,
+    analisis TEXT,
+    plan TEXT,
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    actualizado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente) ON DELETE CASCADE,
+    FOREIGN KEY (id_medico) REFERENCES medicos(id) ON DELETE CASCADE,
+    INDEX idx_fecha (fecha),
+    INDEX idx_paciente (id_paciente),
+    INDEX idx_medico (id_medico)
+);
+
+-- 7. TRIGGERS (después de que todas las tablas existen)
+DELIMITER $$
 
 CREATE TRIGGER trigger_insert_medico
 AFTER INSERT ON usuarios
@@ -73,12 +216,7 @@ BEGIN
         INSERT INTO medicos (nip, nombre, correo, telefono)
         VALUES (NEW.nip, NEW.nombre, NEW.correo, NEW.telefono);
     END IF;
-END;
-//
-
-DELIMITER ;
-
-DELIMITER //
+END$$
 
 CREATE TRIGGER trigger_insert_cuidador
 AFTER INSERT ON usuarios
@@ -88,137 +226,54 @@ BEGIN
         INSERT INTO cuidadores (nip, nombre, correo, telefono)
         VALUES (NEW.nip, NEW.nombre, NEW.correo, NEW.telefono);
     END IF;
-END;
-//
+END$$
 
-DELIMITER ;
-
-CREATE TABLE enfermeria (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  nip VARCHAR(20),
-  nombre VARCHAR(100),
-  correo VARCHAR(100),
-  FOREIGN KEY (nip) REFERENCES usuarios(nip)
-);
-
-CREATE TABLE kinesica (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  nip VARCHAR(20),
-  nombre VARCHAR(100),
-  correo VARCHAR(100),
-  FOREIGN KEY (nip) REFERENCES usuarios(nip)
-);
-
-
-DELIMITER $$
-CREATE TRIGGER insertar_enfermeria AFTER INSERT ON usuarios
+CREATE TRIGGER trigger_insert_cocina
+AFTER INSERT ON usuarios
 FOR EACH ROW
 BEGIN
-  IF NEW.rol = 'enfermeria' THEN
-    INSERT INTO enfermeria (nip, nombre, correo) 
-    VALUES (NEW.nip, NEW.nombre, NEW.correo);
-  END IF;
+    IF NEW.rol = 'cocina' THEN
+        INSERT INTO cocineros (nip, nombre, correo, telefono)
+        VALUES (NEW.nip, NEW.nombre, NEW.correo, NEW.telefono);
+    END IF;
 END$$
-DELIMITER ;
 
-DELIMITER $$
-CREATE TRIGGER insertar_kinesica AFTER INSERT ON usuarios
+CREATE TRIGGER insertar_enfermeria
+AFTER INSERT ON usuarios
 FOR EACH ROW
 BEGIN
-  IF NEW.rol = 'kinesica' THEN
-    INSERT INTO kinesica (nip, nombre, correo) 
-    VALUES (NEW.nip, NEW.nombre, NEW.correo);
-  END IF;
+    IF NEW.rol = 'enfermeria' THEN
+        INSERT INTO enfermeria (nip, nombre, correo)
+        VALUES (NEW.nip, NEW.nombre, NEW.correo);
+    END IF;
 END$$
+
+CREATE TRIGGER insertar_kinesica
+AFTER INSERT ON usuarios
+FOR EACH ROW
+BEGIN
+    IF NEW.rol = 'kinesica' THEN
+        INSERT INTO kinesica (nip, nombre, correo)
+        VALUES (NEW.nip, NEW.nombre, NEW.correo);
+    END IF;
+END$$
+
+-- Trigger para descontar inventario de ingredientes
+CREATE TRIGGER descontar_ingredientes
+AFTER INSERT ON ingredientes_usados
+FOR EACH ROW
+BEGIN
+    UPDATE ingredientes
+    SET cantidad_disponible = cantidad_disponible - NEW.cantidad_utilizada
+    WHERE id = NEW.id_ingrediente;
+END$$
+
 DELIMITER ;
 
+-- 8. Usuario administrador inicial (opcional)
+INSERT INTO usuarios (nombre, correo, nip, rol)
+VALUES ('Administrador', 'admin@uta.com', '1234', 'admin');
 
--- Tabla: notificaciones médicas
-CREATE TABLE notificaciones (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    titulo VARCHAR(100) NOT NULL,
-    mensaje TEXT NOT NULL,
-    fecha DATETIME DEFAULT CURRENT_TIMESTAMP
-);
-
--- Tabla: cocina (menú diario)
-CREATE TABLE cocina (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    fecha DATE NOT NULL,
-    desayuno VARCHAR(255),
-    comida VARCHAR(255),
-    cena VARCHAR(255)
-);
-
-CREATE TABLE reportes_cuidadores (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    id_paciente INT NOT NULL,
-    id_cuidador INT NOT NULL,
-    fecha DATE NOT NULL,
-    observaciones TEXT,
-    comio BOOLEAN NOT NULL,
-    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente) ON DELETE CASCADE,
-    FOREIGN KEY (id_cuidador) REFERENCES cuidadores(id) ON DELETE CASCADE
-);
-
-CREATE TABLE reportes_cocina (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    fecha DATE NOT NULL,
-    ingredientes_utilizados TEXT,
-    notas TEXT
-);
-
-CREATE TABLE reportes_medicos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    id_paciente INT NOT NULL,
-    id_medico INT NOT NULL,
-    fecha DATE NOT NULL,
-    sueno TEXT COMMENT 'Calidad y duración del sueño',
-    dieta TEXT COMMENT 'Hábitos alimenticios y dieta',
-    esfera_emocional TEXT COMMENT 'Estado emocional del paciente',
-    memoria TEXT COMMENT 'Evaluación de memoria',
-    micciones TEXT COMMENT 'Patrón miccional',
-    evacuaciones TEXT COMMENT 'Patrón evacuatorio',
-    eventualidades TEXT COMMENT 'Eventos relevantes ocurridos',
-    
-    -- Signos vitales (nuevos campos estructurados)
-    ta_sistolica SMALLINT COMMENT 'Tensión arterial sistólica (mmHg)',
-    ta_diastolica SMALLINT COMMENT 'Tensión arterial diastólica (mmHg)',
-    fc SMALLINT COMMENT 'Frecuencia cardíaca (lpm)',
-    fr SMALLINT COMMENT 'Frecuencia respiratoria (rpm)',
-    sat_o2 TINYINT COMMENT 'Saturación de O2 (%)',
-    temp DECIMAL(3,1) COMMENT 'Temperatura (°C)',
-    peso DECIMAL(5,2) COMMENT 'Peso (kg)',
-    talla SMALLINT COMMENT 'Talla (cm)',
-    imc DECIMAL(4,1) COMMENT 'Índice de masa corporal',
-    glucemia SMALLINT COMMENT 'Glucemia (mg/dL)',
-    
-    -- Campos adicionales para signos vitales
-    otros_signos TEXT COMMENT 'Otros signos vitales no estandarizados',
-    
-    -- Campos existentes
-    analisis TEXT COMMENT 'Análisis médico',
-    plan TEXT COMMENT 'Plan de tratamiento',
-    
-    -- Auditoría
-    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    actualizado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    
-    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente) ON DELETE CASCADE,
-    FOREIGN KEY (id_medico) REFERENCES medicos(id) ON DELETE CASCADE,
-    
-    -- Índices para búsquedas frecuentes
-    INDEX idx_fecha (fecha),
-    INDEX idx_paciente (id_paciente),
-    INDEX idx_medico (id_medico)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Registros médicos de pacientes';
-
-CREATE TABLE cuidadores (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    turno ENUM('mañana', 'tarde', 'noche') NOT NULL,
-    contacto VARCHAR(100)
-);
 
 
 
