@@ -65,7 +65,7 @@ if (isset($_POST['registrar_usuario'])) {
     }
 
     // Validar rol seleccionado
-    $rolesPermitidos = ['familiar', 'admin', 'cuidador', 'medico', 'enfermeria', 'kinesica'];
+    $rolesPermitidos = ['familiar', 'admin', 'cocina', 'cuidador', 'medico', 'enfermeria', 'kinesica'];
     if (!in_array($rol, $rolesPermitidos)) {
         echo "<script>
             alert('⚠️ Por favor selecciona un rol válido');
@@ -239,6 +239,7 @@ try {
                         <option value="admin">Administrador</option>
                         <option value="cuidador">Cuidador</option>
                         <option value="medico">Médico</option>
+                        <option value="cocina">Cocina</option>
                         <option value="enfermeria">Enfermería</option>
                         <option value="kinesica">Kinesica</option>
                     </select>
