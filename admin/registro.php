@@ -109,9 +109,9 @@ if (isset($_POST['registrar_usuario'])) {
 // Registro de paciente
 if (isset($_POST['registrar_paciente'])) {
     // Validar campos obligatorios
-    if (empty($_POST['paciente_nip']) || empty($_POST['paciente_nombre'])) {
+    if (empty($_POST['paciente_nip']) || empty($_POST['paciente_nombre']) || empty($_POST['fecha_nacimiento'])) {
         echo "<script>
-            alert('⚠️ El familiar asociado y el nombre del paciente son obligatorios');
+            alert('⚠️ El familiar asociado, el nombre del paciente y la fecha de nacimiento son obligatorios');
             window.history.back();
         </script>";
         exit();
@@ -119,6 +119,7 @@ if (isset($_POST['registrar_paciente'])) {
 
     $nip = $_POST['paciente_nip'];
     $nombre = $_POST['paciente_nombre'];
+    $fecha_nacimiento = $_POST['fecha_nacimiento']; // <-- AQUI
     $telefono = $_POST['paciente_telefono'] ?? '';
     $condiciones = isset($_POST['condiciones']) ? $_POST['condiciones'] : [];
 
@@ -148,12 +149,13 @@ if (isset($_POST['registrar_paciente'])) {
 
     try {
         // Insertar paciente
-        $sql = "INSERT INTO pacientes (nip, nombre, telefono, condiciones, foto) 
-                VALUES (:nip, :nombre, :telefono, :condiciones, :foto)";
+        $sql = "INSERT INTO pacientes (nip, nombre, fecha_nacimiento, telefono, condiciones, foto) 
+                VALUES (:nip, :nombre, :fecha_nacimiento, :telefono, :condiciones, :foto)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             ':nip' => $nip,
             ':nombre' => $nombre,
+            ':fecha_nacimiento' => $fecha_nacimiento,
             ':telefono' => $telefono,
             ':condiciones' => $condiciones,
             ':foto' => $foto_url
@@ -161,7 +163,7 @@ if (isset($_POST['registrar_paciente'])) {
         
         echo "<script>
             alert('✅ Paciente registrado correctamente');
-            window.location.href = 'registro.php'; // Recarga la página para resetear el formulario
+            window.location.href = 'registro.php';
         </script>";
     } catch (PDOException $e) {
         echo "<script>
@@ -171,6 +173,7 @@ if (isset($_POST['registrar_paciente'])) {
     }
     exit();
 }
+
 
 // Obtener usuarios familiares
 $usuarios = [];
@@ -273,6 +276,12 @@ try {
                 <div class="registro-form-group">
                     <label for="paciente_telefono">Teléfono del paciente</label>
                     <input type="text" id="paciente_telefono" name="paciente_telefono" placeholder="Ej: 5512345678">
+                </div>
+
+
+                <div class="registro-form-group">
+                    <label for="paciente_nacimiento">Fecha de Nacimiento:</label>
+                    <input type="date" id="paciente_telefono" name="fecha_nacimiento" required>
                 </div>
 
                 <div class="registro-form-group">
