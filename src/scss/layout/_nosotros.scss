@@ -1,0 +1,104 @@
+.goal-section {
+  p {
+    span {
+      display: block;
+    }
+  }
+}
+
+.about-us-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3rem;
+}
+
+.facts-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  @include media-down($breakpoint-phone) {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .facts-item {
+    position: relative;
+    border: 0.1px solid $color-gray;
+    padding: 2rem;
+    color: $color-green-dark;
+    .facts-text {
+      position: absolute;
+      top: 1rem;
+      left: 2rem;
+      margin: 0;
+    }
+    .facts-number {
+      font-size: 5rem;
+      margin: 10rem 0 5rem 0;
+    }
+  }
+}
+
+.mission-vission-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3rem;
+  @include media-down ($breakpoint-tablet) {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+  }
+  @include media-up ($breakpoint-desktop) {
+    img {
+      grid-column: 1 / 2;
+    }
+  }
+  .mission-vission-section-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    @include media-up ($breakpoint-desktop) {
+      grid-column: 2 / 4;
+      grid-row: 1 / 2;
+    }
+  }
+}
+
+.ceo-message-section {
+  @include media-up ($breakpoint-desktop) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10rem;
+  }
+  .ceo-message--text {
+    margin: auto;
+    @include media-down($breakpoint-tablet) {
+      margin-bottom: 3rem;
+    }
+    blockquote {
+      padding-left: 5rem;
+      position: relative;
+      margin-bottom: 3rem;
+
+      &::before {
+        content: '';
+        background-image: url(../img/comilla.svg);
+        background-repeat: no-repeat;
+        width: 6rem;
+        height: 8rem;
+        display: block;
+        position: absolute;
+        left: -2rem;
+      }
+    }
+  }
+}
+.team-section {
+  .team-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3rem;
+    @include media-down ($breakpoint-tablet) {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}

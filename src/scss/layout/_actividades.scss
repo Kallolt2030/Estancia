@@ -1,0 +1,117 @@
+.contenedor-principal {
+  margin-top: 200px;
+}
+
+/* Título centrado */
+.actividades-h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* Carrusel centrado */
+.carrusel {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Tarjeta de actividad */
+.actividad {
+  flex: 0 0 280px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+
+.actividad:hover {
+  transform: scale(1.02);
+}
+
+.actividad img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.actividad h3 {
+  font-size: 1.1rem;
+  margin: 12px;
+}
+
+.actividad button {
+  margin: 10px 12px 15px;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.actividad button:hover {
+  background-color: #0056b3;
+}
+
+/* Modal centrado */
+.actividades-modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+/* Contenido del modal */
+.actividades-modal-content {
+  background: white;
+  padding: 25px 30px;
+  border-radius: 12px;
+  max-width: 450px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+  animation: slideIn 0.3s ease;
+}
+
+/* Botón de cierre */
+.close {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  font-size: 26px;
+  font-weight: bold;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.close:hover {
+  color: #000;
+}
+
+/* Animación modal */
+@keyframes slideIn {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.modal-dialog {
+  margin-top: 100px; /* Ajusta el valor según lo que necesites */
+}
+

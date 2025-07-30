@@ -1,0 +1,53 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+body {
+  font-family: $font-primary;
+  font-size: 1.6rem;
+  line-height: 1.5;
+}
+.container {
+  width: 95%;
+  max-width: 130rem;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+a {
+  text-decoration: none;
+}
+img,
+picture {
+  width: 100%;
+  display: block;
+}
+h1, h2, h3, h4 {
+  font-family: $font-heading;
+  margin: 0;
+  font-weight: $font-weight-regular;
+  text-align: center;
+  line-height: 1.2;
+}
+h1 {
+  font-size: 3.6rem;
+}
+h2 {
+  font-size: 2.8rem;
+}
+h3 {
+  font-size: 2.2rem;
+}
+h4 {
+  font-size: 1.8rem;
+}
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}

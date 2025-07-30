@@ -1,0 +1,88 @@
+.admin-update-post {
+  max-width: 800px;
+  margin: 3rem auto;
+  background: rgba(18, 18, 18, 0.5);
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.7rem;
+  backdrop-filter: blur(12px);
+  padding: 2rem;
+  color: $color-white;
+
+  .admin-update-title {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+  }
+
+  .admin-update-errors {
+    background: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+
+    li {
+      list-style: none;
+      margin: 0.3rem 0;
+      font-weight: bold;
+    }
+  }
+
+  .admin-update-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .admin-update-label {
+    font-weight: bold;
+    margin-bottom: 0.2rem;
+    display: block;
+  }
+
+  .admin-update-input,
+  .admin-update-textarea,
+  .admin-update-file {
+    width: 100%;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    color: $color-white;
+    font-size: 1rem;
+
+    &:focus {
+      outline: none;
+      border-color: #2d8cff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+  }
+
+  .admin-update-textarea {
+    resize: vertical;
+    min-height: 150px;
+  }
+
+  .admin-update-preview {
+    max-width: 200px;
+    display: block;
+    margin-top: 0.5rem;
+    border-radius: 0.5rem;
+  }
+
+  .admin-update-submit {
+    background: #2d8cff;
+    color: white;
+    font-weight: bold;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s ease;
+
+    // &:hover {
+    //   background: lighten(#2d8cff, 10%);
+    // }
+  }
+}

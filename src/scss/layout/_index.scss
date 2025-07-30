@@ -1,0 +1,86 @@
+// QUIÉNES SOMOS
+.who-we-are-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  .who-we-are-section--text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    p {
+      span {
+        display: block;
+      }
+    }
+  }
+  @include media-down($breakpoint-tablet) {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 3rem;
+    p {
+      font-size: 2rem;
+    }
+  }
+}
+
+// SERVICIOS
+.services-section {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  .services-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5rem;
+    @include media-down($breakpoint-tablet) {
+      grid-template-columns: repeat(1, 1fr);
+    }
+    .services-item {
+      background-color: $color-green-dark;
+      color: $color-white;
+      .services-item-text {
+        padding: 4rem;
+      }
+    }
+  }
+}
+
+// NOTICIAS
+.news-section {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 3rem;
+  color: $color-black;
+  .news-item--featured {
+    @include media-down($breakpoint-tablet) {
+      padding-bottom: 2rem;
+      border-bottom: 1px solid $color-gray;
+    }
+  }
+  .news-item--secondary {
+    display: flex;
+    flex-direction: column;
+    a {
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid $color-gray;
+      color: $color-black;
+      &:first-of-type {
+        padding-top: 0;
+      }
+    }
+    .news-item--small {
+      display: grid;
+      grid-template-columns: 3fr 7fr;
+      gap: 2rem;
+      .news-item__excerpt {
+        @include media-down($breakpoint-phone) {
+          display: none;
+        }
+      }
+    }
+  }
+  @include media-down($breakpoint-tablet) {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid $color-gray;
+  }
+}

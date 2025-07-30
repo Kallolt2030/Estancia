@@ -1,0 +1,26 @@
+// BASE
+@import 'base/normalize';
+@import 'base/variables';
+@import 'base/mixins';
+@import 'base/globales';
+@import 'base/utilidades';
+@import 'base/botones';
+
+// LAYOUT
+@import 'layout/header';
+@import 'layout/footer';
+@import 'layout/index';
+@import 'layout/entrada';
+@import 'layout/nosotros';
+@import 'layout/noticias';
+@import 'layout/estancia';
+@import 'layout/servicios';
+@import 'layout/actividades';
+@import 'layout/contacto';
+
+// ADMINISTRACIÓN
+@import 'admin/login';
+@import 'admin/index';
+@import 'admin/headerAdmin';
+@import 'admin/crear';
+@import 'admin/actualizar';

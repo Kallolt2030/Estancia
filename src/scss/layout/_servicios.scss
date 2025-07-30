@@ -1,0 +1,26 @@
+.services-menu {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  @include media-down($breakpoint-phone) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .services-menu-list {
+    display: block;
+    p {
+      padding: 1rem 0;
+      border-bottom: 1px solid $color-black;
+    }
+  }
+}
+.serv-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3rem;
+  @include media-down($breakpoint-tablet) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .serv-desc {
+    display: flex;
+    flex-direction: column;
+  }
+}

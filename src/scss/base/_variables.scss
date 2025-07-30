@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap');
+
+// Tipography
+$font-heading: 'Times New Roman', Times, serif;
+$font-primary: 'Lato', sans-serif;
+$font-secondary: "Merriweather", serif;
+
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+$font-weight-black: 900;
+
+// Breakpoints
+$breakpoint-phone: 30em; // 480px
+$breakpoint-tablet: 48em; // 768px
+$breakpoint-desktop: 64em; // 1024px
+
+// Colors
+$color-black: #000000;
+$color-black-transparent: rgba($color-black, 0.3);
+$color-white: #ffffff;
+$color-gray: #e1e1e1;
+$color-gray-dark: #ffffff59;
+$color-green-dark: #123524;
+$color-yellow: #EAB308;
+$color-green: #16A34A;
+$color-orange: #EA580C;
+$color-blue: #2563EB;
+$color-red: #FF0000;
