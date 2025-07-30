@@ -26,17 +26,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         switch ($tipo) {
 
-    case 'cuidador':
-    if (empty($_POST['id_paciente']) || empty($_POST['id_cuidador']) || empty($_POST['fecha'])) {
+    case 'cuidador-enfermero':
+    if (empty($_POST['id_paciente']) || empty($_POST['nip_usuario']) || empty($_POST['fecha'])) {
         $error_msg = "Faltan datos obligatorios para el reporte del cuidador";
         break;
     }
 
     $id_paciente = $_POST['id_paciente'];
-    $id_cuidador = $_POST['id_cuidador'];
+    $nip_usuario = $_POST['nip_usuario'];
     $fecha = $_POST['fecha'];
     $observaciones = $_POST['observaciones'] ?? '';
+
+    // Datos del cuidador
     $comio = $_POST['comio'] ?? 0;
+    $agua = $_POST['agua'] ?? 0;
+    $colacion = $_POST['colacion'] ?? 0;
+
+    // Datos de enfermería
+    $medicamentos = $_POST['medicamentos'] ?? null;
+    $via = $_POST['via'] ?? null;
+    $horario = $_POST['horario'] ?? null;
+    $procedimientos = $_POST['procedimientos'] ?? null;
+    $evacuaciones = $_POST['evacuaciones'] ?? null;
+    $orina = $_POST['orina'] ?? null;
+    $vomito = $_POST['vomito'] ?? null;
+
+    // Datos para cocina
     $tipo_comida = $_POST['tipo_comida'] ?? null;
     $platillo = $_POST['platillo'] ?? null;
     $hora_comida = $_POST['hora_comida'] ?? null;
@@ -44,37 +59,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $pdo->beginTransaction();
 
-        // Guardar en reportes_cuidadores
-        $stmt = $pdo->prepare("INSERT INTO reportes_cuidadores 
-            (id_paciente, id_cuidador, fecha, observaciones, comio)
-            VALUES (?, ?, ?, ?, ?)");
-        $stmt->execute([$id_paciente, $id_cuidador, $fecha, $observaciones, $comio]);
+        // Insertar en reportes_generales
+        $stmt = $pdo->prepare("INSERT INTO reportes_generales 
+    (id_paciente, nip_usuario, fecha, medicamentos, via, horario, procedimientos, evacuaciones, orina, vomito, agua, colacion, comio, observaciones)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-        // Si comió, guardar también en consumo_comidas y actualizar cocina
+        
+        $stmt->execute([
+    $id_paciente, $nip_usuario, $fecha,
+    $medicamentos, $via, $horario, $procedimientos,
+    $evacuaciones, $orina, $vomito,
+    $agua, $colacion, $comio,
+    $observaciones
+]);
+
+        // Guardar comida si comió
         if ($comio == 1 && $tipo_comida && $platillo && $hora_comida) {
-
-            // Validar que tipo_comida sea válido
             if (in_array($tipo_comida, ['desayuno', 'comida', 'cena'])) {
 
-                // 1. Guardar en consumo_comidas
+                // Guardar en consumo_comidas
                 $stmt2 = $pdo->prepare("INSERT INTO consumo_comidas 
                     (id_paciente, fecha, hora, tipo_comida, platillo_consumido)
                     VALUES (?, ?, ?, ?, ?)");
                 $stmt2->execute([$id_paciente, $fecha, $hora_comida, $tipo_comida, $platillo]);
 
-                // 2. Actualizar tabla cocina
-                // Verificar si ya existe un registro para esa fecha
+                // Verificar si ya existe un registro en cocina
                 $stmt3 = $pdo->prepare("SELECT id FROM cocina WHERE fecha = ?");
                 $stmt3->execute([$fecha]);
                 $existeRegistro = $stmt3->fetch();
 
                 if ($existeRegistro) {
-                    // Actualizar el campo correspondiente
                     $query = "UPDATE cocina SET $tipo_comida = ? WHERE fecha = ?";
                     $stmt4 = $pdo->prepare($query);
                     $stmt4->execute([$platillo, $fecha]);
                 } else {
-                    // Insertar nuevo registro
                     $query = "INSERT INTO cocina (fecha, $tipo_comida) VALUES (?, ?)";
                     $stmt5 = $pdo->prepare($query);
                     $stmt5->execute([$fecha, $platillo]);
@@ -83,12 +101,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $pdo->commit();
-        $success_msg = "Reporte del cuidador guardado correctamente.";
+        $success_msg = "Reporte del cuidador-enfermero guardado correctamente.";
     } catch (PDOException $e) {
         $pdo->rollBack();
         $error_msg = "Error al guardar el reporte: " . $e->getMessage();
     }
     break;
+
+ case 'signos_vitales':
+    if (empty($_POST['id_paciente']) || empty($_POST['fecha'])) {
+        $error_msg = "Faltan datos obligatorios para el reporte de signos vitales";
+        break;
+    }
+
+    $id_paciente = $_POST['id_paciente'];
+    $fecha = $_POST['fecha'];
+    $ta_sistolica = $_POST['ta_sistolica'] ?? null;
+    $ta_diastolica = $_POST['ta_diastolica'] ?? null;
+    $fc = $_POST['fc'] ?? null;
+    $fr = $_POST['fr'] ?? null;
+    $sat_o2 = $_POST['sat_o2'] ?? null;
+    $glucemia = $_POST['glucemia'] ?? null;
+    $temp = $_POST['temp'] ?? null;
+
+   try {
+    $pdo->beginTransaction();
+
+    // Preparar la consulta SQL
+    $stmt = $pdo->prepare("INSERT INTO signos_vitales 
+        (id_paciente, fecha, ta_sistolica, ta_diastolica, fc, fr, sat_o2, glucemia, temp)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+    // Ejecutar la consulta
+    $stmt->execute([
+        $id_paciente, $fecha,
+        $ta_sistolica, $ta_diastolica, $fc, $fr, $sat_o2, $glucemia, $temp
+    ]);
+
+    // Confirmar la transacción
+    $pdo->commit();
+    $success_msg = "Reporte de signos vitales guardado correctamente.";
+} catch (PDOException $e) {
+    // Revertir en caso de error
+    $pdo->rollBack();
+    $error_msg = "Error al guardar el reporte: " . $e->getMessage();
+
+    // Para depuración: muestra el error completo
+    echo "<pre>" . $e->getMessage() . "</pre>";
+}
+
+    break;
+
+
 
 
 case 'cocina':
@@ -152,105 +216,76 @@ case 'cocina':
     break;
 
 
-    case 'medico':
-            if (empty($_POST['id_paciente']) || empty($_POST['id_medico']) || empty($_POST['fecha'])) {
-                $mensaje_error = "Faltan datos obligatorios para el reporte médico";
-                break;
-            }
-            
-            // Datos básicos
-            $id_paciente = $_POST['id_paciente'];
-            $id_medico = $_POST['id_medico'];
-            $fecha = $_POST['fecha'];
-            
-            // Campos textuales
-            $sueno = $_POST['sueno'] ?? null;
-            $dieta = $_POST['dieta'] ?? null;
-            $esfera_emocional = $_POST['esfera'] ?? null;
-            $memoria = $_POST['memoria'] ?? null;
-            $micciones = $_POST['micciones'] ?? null;
-            $evacuaciones = $_POST['evacuaciones'] ?? null;
-            $otros_signos = $_POST['otros_signos'] ?? null;
-            $analisis = $_POST['analisis'] ?? null;
-            $plan = $_POST['plan'] ?? null;
-            
-            // Signos vitales estructurados
-            $ta_sistolica = !empty($_POST['ta_sistolica']) ? (int)$_POST['ta_sistolica'] : null;
-            $ta_diastolica = !empty($_POST['ta_diastolica']) ? (int)$_POST['ta_diastolica'] : null;
-            $fc = !empty($_POST['fc']) ? (int)$_POST['fc'] : null;
-            $fr = !empty($_POST['fr']) ? (int)$_POST['fr'] : null;
-            $sat_o2 = !empty($_POST['sat_o2']) ? (int)$_POST['sat_o2'] : null;
-            $temp = !empty($_POST['temp']) ? (float)$_POST['temp'] : null;
-            $peso = !empty($_POST['peso']) ? (float)$_POST['peso'] : null;
-            $talla = !empty($_POST['talla']) ? (int)$_POST['talla'] : null;
-            $glucemia = !empty($_POST['glucemia']) ? (int)$_POST['glucemia'] : null;
-            
-            // Calcular IMC si hay peso y talla
-            $imc = null;
-            if ($peso && $talla && $talla > 0) {
-                $talla_metros = $talla / 100;
-                $imc = round($peso / ($talla_metros * $talla_metros), 1);
-            }
-            
-            try {
-                $pdo->beginTransaction();
-                
-                $stmt = $pdo->prepare("INSERT INTO reportes_medicos (
-                    id_paciente, id_medico, fecha, 
-                    sueno, dieta, esfera_emocional, memoria, 
-                    micciones, evacuaciones, 
-                    ta_sistolica, ta_diastolica, fc, fr, sat_o2, temp,
-                    peso, talla, imc, glucemia, otros_signos,
-                    analisis, plan
-                ) VALUES (
-                    ?, ?, ?, 
-                    ?, ?, ?, ?, 
-                    ?, ?, 
-                    ?, ?, ?, ?, ?, ?,
-                    ?, ?, ?, ?, ?,
-                    ?, ?
-                )");
-                
-                $stmt->execute([
-                    $id_paciente, $id_medico, $fecha,
-                    $sueno, $dieta, $esfera_emocional, $memoria,
-                    $micciones, $evacuaciones,
-                    $ta_sistolica, $ta_diastolica, $fc, $fr, $sat_o2, $temp,
-                    $peso, $talla, $imc, $glucemia, $otros_signos,
-                    $analisis, $plan
-                ]);
-                
-                $pdo->commit();
-                $success_msg = "Reporte médico guardado con éxito.";
-                
-                // Limpiar campos después de guardar exitosamente
-                $_POST = [];
-            } catch (PDOException $e) {
-                $pdo->rollBack();
-                $error_msg = "Error al guardar el reporte médico: " . $e->getMessage();
-            }
-            break;
+case 'medico':
+    if (empty($_POST['id_paciente']) || empty($_POST['id_medico']) || empty($_POST['fecha'])) {
+        $mensaje_error = "Faltan datos obligatorios para el reporte médico";
+        break;
+    }
+    
+    // Datos básicos
+    $id_paciente = $_POST['id_paciente'];
+    $id_medico = $_POST['id_medico'];
+    $fecha = $_POST['fecha'];
+    
+    // Campos textuales
+    $sueno = $_POST['sueno'] ?? null;
+    $dieta = $_POST['dieta'] ?? null;
+    $esfera_emocional = $_POST['esfera'] ?? null;
+    $memoria = $_POST['memoria'] ?? null;
+    $micciones = $_POST['micciones'] ?? null;
+    $otros_signos = $_POST['otros_signos'] ?? null;
+    $analisis = $_POST['analisis'] ?? null;
+    $plan = $_POST['plan'] ?? null;
+    
+    // Asegurarse de que peso y talla estén definidos antes de calcular el IMC
+    $peso = $_POST['peso'] ?? null;
+    $talla = $_POST['talla'] ?? null;
+    
+    // Calcular IMC si hay peso y talla
+    $imc = null;
+    if ($peso && $talla && $talla > 0) {
+        $talla_metros = $talla / 100;  // Convertir talla a metros
+        $imc = round($peso / ($talla_metros * $talla_metros), 1);
+    }
+    
+    try {
+        $pdo->beginTransaction();
+        
+        // Ajustar la consulta SQL según los campos existentes en la base de datos
+        $stmt = $pdo->prepare("INSERT INTO reportes_medicos (
+            id_paciente, id_medico, fecha, 
+            sueno, dieta, esfera_emocional, memoria, 
+            micciones, 
+            peso, talla, imc, 
+            analisis, plan
+        ) VALUES (
+            ?, ?, ?, 
+            ?, ?, ?, ?, 
+            ?, 
+            ?, ?, ?, 
+            ?, ?
+        )");
 
-            case 'enfermeria':
-                if (empty($_POST['id_paciente']) || empty($_POST['id_enfermero']) || empty($_POST['fecha'])) {
-                    $error_msg = "Faltan datos obligatorios para el reporte de enfermería";
-                    break;
-                }
-                
-                $id_paciente = $_POST['id_paciente'];
-                $id_enfermero = $_POST['id_enfermero'];
-                $fecha = $_POST['fecha'];
-                $signos_vitales = $_POST['signos_vitales'] ?? '';
-                $medicamentos = $_POST['medicamentos'] ?? '';
-                $procedimientos = $_POST['procedimientos'] ?? '';
-                $observaciones = $_POST['observaciones'] ?? '';
+        // Ejecutar la consulta con los valores recibidos
+        $stmt->execute([
+            $id_paciente, $id_medico, $fecha,
+            $sueno, $dieta, $esfera_emocional, $memoria,
+            $micciones,
+            $peso, $talla, $imc, 
+            $analisis, $plan
+        ]);
 
-                $stmt = $pdo->prepare("INSERT INTO reportes_enfermeria (id_paciente, id_enfermero, fecha, signos_vitales, medicamentos, procedimientos, observaciones)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)");
-                $stmt->execute([$id_paciente, $id_enfermero, $fecha, $signos_vitales, $medicamentos, $procedimientos, $observaciones]);
+        $pdo->commit();
+        $success_msg = "Reporte médico guardado con éxito.";
+        
+        // Limpiar campos después de guardar exitosamente
+        $_POST = [];
+    } catch (PDOException $e) {
+        $pdo->rollBack();
+        $error_msg = "Error al guardar el reporte médico: " . $e->getMessage();
+    }
+    break;
 
-                $success_msg = "Reporte de enfermería guardado correctamente.";
-                break;
 
             case 'kinesica':
                 if (empty($_POST['id_paciente']) || empty($_POST['id_kinesiologo']) || empty($_POST['fecha'])) {
@@ -305,10 +340,10 @@ case 'cocina':
 <select id="area" onchange="mostrarFormulario()">
   <option value="">-- Selecciona --</option>
   <option value="medico">Médico</option>
-  <option value="cuidador">Cuidador</option>
+  <option value="cuidador-enfermero">Cuidador-Enfermero</option>
   <option value="cocina">Cocina</option>
-  <option value="enfermeria">Enfermería</option>
-  <option value="kinesica">Kinesiología</option>
+  <option value="kinesica">Kinesico</option>
+  <option value="signos_vitales">Signos vitales</option>
 </select>
 
 <!-- 🔽 FORMULARIO MÉDICO COMPLETO ACTUALIZADO -->
@@ -360,78 +395,6 @@ case 'cocina':
                 </div>
             </div>
             
-            <!-- Sección de signos vitales estructurados -->
-            <div class="signos-section">
-                <h4>Signos Vitales</h4>
-                <div class="signos-grid">
-                    <div>
-                        <label>T.A. Sistólica:</label>
-                        <input type="number" name="ta_sistolica" min="70" max="250" 
-                               placeholder="120" value="<?= $_POST['ta_sistolica'] ?? '' ?>">
-                        <span class="unidad">mmHg</span>
-                    </div>
-                    
-                    <div>
-                        <label>T.A. Diastólica:</label>
-                        <input type="number" name="ta_diastolica" min="40" max="150" 
-                               placeholder="80" value="<?= $_POST['ta_diastolica'] ?? '' ?>">
-                        <span class="unidad">mmHg</span>
-                    </div>
-                    
-                    <div>
-                        <label>Frec. Cardíaca:</label>
-                        <input type="number" name="fc" min="30" max="200" 
-                               placeholder="72" value="<?= $_POST['fc'] ?? '' ?>">
-                        <span class="unidad">lpm</span>
-                    </div>
-                    
-                    <div>
-                        <label>Frec. Respiratoria:</label>
-                        <input type="number" name="fr" min="6" max="60" 
-                               placeholder="16" value="<?= $_POST['fr'] ?? '' ?>">
-                        <span class="unidad">rpm</span>
-                    </div>
-                    
-                    <div>
-                        <label>Sat. O<sub>2</sub>:</label>
-                        <input type="number" name="sat_o2" min="60" max="100" 
-                               placeholder="98" value="<?= $_POST['sat_o2'] ?? '' ?>">
-                        <span class="unidad">%</span>
-                    </div>
-                    
-                    <div>
-                        <label>Temperatura:</label>
-                        <input type="number" name="temp" step="0.1" min="35" max="42" 
-                               placeholder="36.5" value="<?= $_POST['temp'] ?? '' ?>">
-                        <span class="unidad">°C</span>
-                    </div>
-                    
-                    <div>
-                        <label>Peso:</label>
-                        <input type="number" name="peso" step="0.1" min="20" max="250" 
-                               placeholder="70.5" value="<?= $_POST['peso'] ?? '' ?>">
-                        <span class="unidad">kg</span>
-                    </div>
-                    
-                    <div>
-                        <label>Talla:</label>
-                        <input type="number" name="talla" min="100" max="250" 
-                               placeholder="170" value="<?= $_POST['talla'] ?? '' ?>">
-                        <span class="unidad">cm</span>
-                    </div>
-                    
-                    <div>
-                        <label>Glucemia:</label>
-                        <input type="number" name="glucemia" min="30" max="500" 
-                               placeholder="90" value="<?= $_POST['glucemia'] ?? '' ?>">
-                        <span class="unidad">mg/dL</span>
-                    </div>
-                </div>
-                
-                <label>Otros signos:</label>
-                <textarea name="otros_signos" rows="2" placeholder="Otros signos relevantes"><?= $_POST['otros_signos'] ?? '' ?></textarea>
-            </div>
-            
             <!-- Sección de evaluación médica -->
             <div class="form-columns">
                 <div class="column">
@@ -456,6 +419,13 @@ case 'cocina':
                     <textarea name="evacuaciones" rows="3" placeholder="Frecuencia, características"><?= $_POST['evacuaciones'] ?? '' ?></textarea>
                 </div>
             </div>
+
+            <label>Peso (kg):</label>
+<input type="number" name="peso" step="0.1" min="0">
+
+<label>Talla (cm):</label>
+<input type="number" name="talla" step="0.1" min="0">
+
             
             <label>Análisis:</label>
             <textarea name="analisis" rows="4" placeholder="Interpretación de los hallazgos"><?= $_POST['analisis'] ?? '' ?></textarea>
@@ -468,30 +438,31 @@ case 'cocina':
 </div>
 
 <!-- 🔽 FORMULARIO CUIDADOR -->
-<div id="form-cuidador" class="form-section">
-  <h3>Formulario Cuidador</h3>
+<div id="form-cuidador-enfermero" class="form-section">
+  <h3>Formulario Cuidador-Enfermero</h3>
   <form method="POST" onsubmit="return validarFormCuidador()">
-    <input type="hidden" name="tipo_reporte" value="cuidador">
+    <input type="hidden" name="tipo_reporte" value="cuidador-enfermero">
 
     <!-- Paciente -->
-<label class="required">Paciente:</label>
-<select name="id_paciente" required>
-  <option value="">Seleccione un paciente...</option>
-  <?php foreach ($pacientes as $paciente): ?>
-      <option value="<?php echo htmlspecialchars($paciente['id_paciente']); ?>">
-          <?php echo htmlspecialchars($paciente['nombre']); ?>
-      </option>
-  <?php endforeach; ?>
-</select>
+    <label class="required">Paciente:</label>
+    <select name="id_paciente" required>
+      <option value="">Seleccione un paciente...</option>
+      <?php foreach ($pacientes as $paciente): ?>
+          <option value="<?= htmlspecialchars($paciente['id_paciente']) ?>">
+              <?= htmlspecialchars($paciente['nombre']) ?>
+          </option>
+      <?php endforeach; ?>
+    </select>
 
-<!-- Cuidador -->
-<label class="required">Cuidador:</label>
-<select name="id_cuidador" required>
-  <option value="">Seleccione un cuidador...</option>
-  <?php foreach ($cuidadores as $cuidador): ?>
-      <option value="<?php echo htmlspecialchars($cuidador['nip']); ?>">
-          <?php echo htmlspecialchars($cuidador['nombre']); ?>
-      </option>
+<!-- Cuidador o Enfermero -->
+<label class="required">Persona que realiza el reporte:</label>
+<select name="nip_usuario" required>
+  <option value="">Seleccione una persona...</option>
+  <?php foreach ($cuidadores as $c): ?>
+      <option value="<?= htmlspecialchars($c['nip']) ?>"><?= htmlspecialchars($c['nombre']) ?> (Cuidador)</option>
+  <?php endforeach; ?>
+  <?php foreach ($enfermeria as $n): ?>
+      <option value="<?= htmlspecialchars($n['nip']) ?>"><?= htmlspecialchars($n['nombre']) ?> (Enfermería)</option>
   <?php endforeach; ?>
 </select>
 
@@ -500,34 +471,71 @@ case 'cocina':
     <label class="required">Fecha:</label>
     <input type="date" name="fecha" required>
 
-    <!-- Observaciones -->
-    <label>Observaciones:</label>
-    <textarea name="observaciones"></textarea>
+    <!-- ✅ CAMPOS DE CUIDADOR -->
+    <h4>Registro del Cuidador</h4>
 
-    <!-- ¿Comió? -->
     <label>¿Comió?</label>
     <select name="comio" id="comio-select" onchange="toggleDetallesComida(this.value)">
       <option value="1">Sí</option>
       <option value="0" selected>No</option>
     </select>
 
-    <!-- Detalles comida - MODIFICADO -->
+    <label>¿Tomó agua?</label>
+    <select name="agua">
+      <option value="1">Sí</option>
+      <option value="0" selected>No</option>
+    </select>
+
+    <label>¿Tomó colación?</label>
+    <select name="colacion">
+      <option value="1">Sí</option>
+      <option value="0" selected>No</option>
+    </select>
+
+    <!-- Detalles comida -->
     <div id="detalle-comida" style="display: none;">
       <label>Tipo de comida:</label>
-      <select name="tipo_comida" id="tipo-comida">
+      <select name="tipo_comida">
         <option value="">Seleccione...</option>
         <option value="desayuno">Desayuno</option>
         <option value="comida">Comida</option>
         <option value="cena">Cena</option>
       </select>
 
-      <!-- Nueva sección para platillo -->
       <label>Platillo consumido:</label>
-      <input type="text" name="platillo" placeholder="Ej. Huevos revueltos, sopa de verduras...">
+      <input type="text" name="platillo" placeholder="Ej. Sopa, arroz, pescado...">
 
       <label>Hora de comida:</label>
       <input type="time" name="hora_comida">
     </div>
+
+    <!-- ✅ CAMPOS DE ENFERMERÍA -->
+    <h4>Registro de Enfermería</h4>
+
+    <label>Medicamentos administrados:</label>
+    <textarea name="medicamentos"></textarea>
+
+    <label>Vía de administración:</label>
+    <input type="text" name="via" placeholder="Ej. oral, intravenosa, etc.">
+
+    <label>Horario de administración:</label>
+    <input type="text" name="horario" placeholder="Ej. 08:00, 14:00...">
+
+    <label>Procedimientos realizados:</label>
+    <textarea name="procedimientos"></textarea>
+
+    <label>Evacuaciones:</label>
+    <textarea name="evacuaciones"></textarea>
+
+    <label>Orina:</label>
+    <textarea name="orina"></textarea>
+
+    <label>Vómito:</label>
+    <textarea name="vomito"></textarea>
+
+    <!-- Observaciones generales -->
+    <label>Observaciones:</label>
+    <textarea name="observaciones"></textarea>
 
     <button type="submit">Guardar</button>
   </form>
@@ -537,7 +545,7 @@ case 'cocina':
   function toggleDetallesComida(valor) {
     document.getElementById('detalle-comida').style.display = valor == '1' ? 'block' : 'none';
   }
-  
+
   function validarFormCuidador() {
     const comio = document.getElementById('comio-select').value;
     if (comio == '1') {
@@ -553,6 +561,56 @@ case 'cocina':
     return true;
   }
 </script>
+
+<div id="form-signos-vitales" class="form-section">
+  <h3>Formulario Signos Vitales</h3>
+  <form method="POST" onsubmit="return validarFormSignos()">
+    <input type="hidden" name="tipo_reporte" value="signos_vitales">
+
+    <label class="required">Paciente:</label>
+    <select name="id_paciente" required>
+      <option value="">-- Seleccione un paciente --</option>
+      <?php foreach ($pacientes as $p): ?>
+        <option value="<?= $p['id_paciente'] ?>" <?= isset($_POST['id_paciente']) && $_POST['id_paciente'] == $p['id_paciente'] ? 'selected' : '' ?>>
+          <?= htmlspecialchars($p['nombre']) ?>
+        </option>
+      <?php endforeach; ?>
+    </select>
+
+    <label class="required">Fecha:</label>
+    <input type="date" name="fecha" required value="<?= isset($_POST['fecha']) ? htmlspecialchars($_POST['fecha']) : '' ?>">
+
+    <label>T.A. Sistólica:</label>
+    <input type="number" name="ta_sistolica" min="70" max="250" placeholder="120" value="<?= $_POST['ta_sistolica'] ?? '' ?>">
+    <span class="unidad">mmHg</span>
+
+    <label>T.A. Diastólica:</label>
+    <input type="number" name="ta_diastolica" min="40" max="150" placeholder="80" value="<?= $_POST['ta_diastolica'] ?? '' ?>">
+    <span class="unidad">mmHg</span>
+
+    <label>Frec. Cardíaca:</label>
+    <input type="number" name="fc" min="30" max="200" placeholder="72" value="<?= $_POST['fc'] ?? '' ?>">
+    <span class="unidad">lpm</span>
+
+    <label>Frec. Respiratoria:</label>
+    <input type="number" name="fr" min="6" max="60" placeholder="16" value="<?= $_POST['fr'] ?? '' ?>">
+    <span class="unidad">rpm</span>
+
+    <label>Sat. O<sub>2</sub>:</label>
+    <input type="number" name="sat_o2" min="60" max="100" placeholder="98" value="<?= $_POST['sat_o2'] ?? '' ?>">
+    <span class="unidad">%</span>
+
+    <label>Glucemia:</label>
+    <input type="number" name="glucemia" min="30" max="500" placeholder="90" value="<?= $_POST['glucemia'] ?? '' ?>">
+    <span class="unidad">mg/dL</span>
+    <label>Temperatura:</label>
+    <input type="number" name="temp" step="0.1" min="35" max="42" placeholder="36.5" value="<?= $_POST['temp'] ?? '' ?>">
+    <span class="unidad">°C</span>
+
+    <button type="submit">Guardar</button>
+  </form>
+
+</div>
 
 
 <!-- 🔽 FORMULARIO COCINA -->
@@ -621,61 +679,6 @@ function agregarIngrediente() {
 }
 </script>
 
-
-
-<!-- 🔽 FORMULARIO ENFERMERÍA -->
-<div id="form-enfermeria" class="form-section">
-  <h3>Formulario Enfermería</h3>
-  <form method="POST" onsubmit="return validarFormEnfermeria()">
-    <input type="hidden" name="tipo_reporte" value="enfermeria">
-
-    <label class="required">Paciente:</label>
-    <select name="id_paciente" required>
-      <option value="">-- Seleccione un paciente --</option>
-      <?php if (!empty($pacientes)): ?>
-        <?php foreach ($pacientes as $p): ?>
-          <option value="<?= $p['id_paciente'] ?>" <?= isset($_POST['id_paciente']) && $_POST['id_paciente'] == $p['id_paciente'] ? 'selected' : '' ?>>
-            <?= htmlspecialchars($p['nombre']) ?>
-          </option>
-        <?php endforeach; ?>
-      <?php else: ?>
-        <option value="">No hay pacientes registrados</option>
-      <?php endif; ?>
-    </select>
-
-    <label class="required">Enfermero/a:</label>
-    <select name="id_enfermero" required>
-      <option value="">-- Seleccione un enfermero --</option>
-      <?php if (!empty($enfermeria)): ?>
-        <?php foreach ($enfermeria as $e): ?>
-          <option value="<?= $e['nip'] ?>" <?= isset($_POST['id_enfermero']) && $_POST['id_enfermero'] == $e['nip'] ? 'selected' : '' ?>>
-            <?= htmlspecialchars($e['nombre']) ?>
-          </option>
-        <?php endforeach; ?>
-      <?php else: ?>
-        <option value="">No hay enfermeros registrados</option>
-      <?php endif; ?>
-    </select>
-
-    <label class="required">Fecha:</label>
-    <input type="date" name="fecha" required value="<?= isset($_POST['fecha']) ? htmlspecialchars($_POST['fecha']) : '' ?>">
-
-    <label>Signos vitales:</label>
-    <textarea name="signos_vitales"><?= isset($_POST['signos_vitales']) ? htmlspecialchars($_POST['signos_vitales']) : '' ?></textarea>
-
-    <label>Medicamentos administrados:</label>
-    <textarea name="medicamentos"><?= isset($_POST['medicamentos']) ? htmlspecialchars($_POST['medicamentos']) : '' ?></textarea>
-
-    <label>Procedimientos realizados:</label>
-    <textarea name="procedimientos"><?= isset($_POST['procedimientos']) ? htmlspecialchars($_POST['procedimientos']) : '' ?></textarea>
-
-    <label>Observaciones:</label>
-    <textarea name="observaciones"><?= isset($_POST['observaciones']) ? htmlspecialchars($_POST['observaciones']) : '' ?></textarea>
-
-    <button type="submit">Guardar</button>
-  </form>
-</div>
-
 <!-- 🔽 FORMULARIO KINESIOLOGÍA -->
 <div id="form-kinesica" class="form-section">
   <h3>Formulario Kinesiología</h3>
@@ -737,12 +740,12 @@ function mostrarFormulario() {
 
   if (area === 'medico') {
     document.getElementById('form-medico').style.display = 'block';
-  } else if (area === 'cuidador') {
-    document.getElementById('form-cuidador').style.display = 'block';
+  } else if (area === 'cuidador-enfermero') {
+    document.getElementById('form-cuidador-enfermero').style.display = 'block';
   } else if (area === 'cocina') {
     document.getElementById('form-cocina').style.display = 'block';
-  } else if (area === 'enfermeria') {
-    document.getElementById('form-enfermeria').style.display = 'block';
+  } else if (area === 'signos_vitales') {
+    document.getElementById('form-signos-vitales').style.display = 'block';
   } else if (area === 'kinesica') {
     document.getElementById('form-kinesica').style.display = 'block';
   }
@@ -782,6 +785,27 @@ function validarFormCuidador() {
     alert('Por favor complete todos los campos obligatorios');
     return false;
   }
+  return true;
+}
+
+function validarFormSignos() {
+  const paciente = document.querySelector('#form-signos-vitales select[name="id_paciente"]').value;
+  const fecha = document.querySelector('#form-signos-vitales input[name="fecha"]').value;
+  
+  if (!paciente || !fecha) {
+    alert('Por favor complete todos los campos obligatorios');
+    return false;
+  }
+  
+  // Validación de signos vitales
+  const taSistolica = document.querySelector('#form-signos-vitales input[name="ta_sistolica"]').value;
+  const taDiastolica = document.querySelector('#form-signos-vitales input[name="ta_diastolica"]').value;
+  
+  if (taSistolica && taDiastolica && parseInt(taSistolica) <= parseInt(taDiastolica)) {
+    alert('La TA sistólica debe ser mayor que la diastólica');
+    return false;
+  }
+  
   return true;
 }
 

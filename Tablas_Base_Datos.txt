@@ -127,23 +127,25 @@ CREATE TABLE expedientes (
     notas TEXT,
     FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente) ON DELETE CASCADE
 );
+CREATE TABLE signos_vitales (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_paciente INT NOT NULL,
+    fecha DATE NOT NULL,
+    ta_sistolica SMALLINT,
+    ta_diastolica SMALLINT,
+    fc SMALLINT,
+    fr SMALLINT,
+    sat_o2 TINYINT,
+    glucemia SMALLINT,
+    temp DECIMAL(3,1),
+    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente) ON DELETE CASCADE
+);
 
 CREATE TABLE notificaciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(100) NOT NULL,
     mensaje TEXT NOT NULL,
     fecha DATETIME DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE reportes_cuidadores (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    id_paciente INT NOT NULL,
-    id_cuidador VARCHAR(20) NOT NULL,
-    fecha DATE NOT NULL,
-    observaciones TEXT,
-    comio BOOLEAN NOT NULL,
-    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente) ON DELETE CASCADE,
-    FOREIGN KEY (id_cuidador) REFERENCES usuarios(nip) ON DELETE CASCADE
 );
 
 CREATE TABLE reporte_kinesico (
@@ -159,18 +161,34 @@ CREATE TABLE reporte_kinesico (
     FOREIGN KEY (id_kinesiologo) REFERENCES usuarios(nip) ON DELETE CASCADE
 );
 
-CREATE TABLE reportes_enfermeria (
-    id_reporte INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE reportes_generales (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     id_paciente INT NOT NULL,
-    id_enfermero VARCHAR(20) NOT NULL,
+    nip_usuario VARCHAR(20) NOT NULL,
     fecha DATE NOT NULL,
-    signos_vitales TEXT,
-    medicamentos INT,
-    procedimientos TEXT,
+    
+    -- Campos específicos de enfermería
+    medicamentos TEXT,                -- Número de medicamentos
+    via VARCHAR(100),               -- Vía de administración (oral, IV, etc.)
+    horario VARCHAR(100),           -- Horario de administración
+    procedimientos TEXT,            -- Procedimientos realizados
+    evacuaciones TEXT,
+    orina TEXT,
+    vomito TEXT,
+
+    -- Campos específicos de cuidador
+    agua BOOLEAN,                   -- Si tomó agua
+    colacion BOOLEAN,               -- Si tomó colación
+    comio BOOLEAN,                  -- Si comió
+
+    -- Campo común
     observaciones TEXT,
+
     FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente) ON DELETE CASCADE,
-    FOREIGN KEY (id_enfermero) REFERENCES usuarios(nip) ON DELETE CASCADE
+    FOREIGN KEY (nip_usuario) REFERENCES usuarios(nip) ON DELETE CASCADE
 );
+
+
 
 CREATE TABLE reportes_medicos (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -182,17 +200,9 @@ CREATE TABLE reportes_medicos (
     esfera_emocional TEXT,
     memoria TEXT,
     micciones TEXT,
-    evacuaciones TEXT,
-    ta_sistolica SMALLINT,
-    ta_diastolica SMALLINT,
-    fc SMALLINT,
-    fr SMALLINT,
-    sat_o2 TINYINT,
-    temp DECIMAL(3,1),
     peso DECIMAL(5,2),
     talla SMALLINT,
     imc DECIMAL(4,1),
-    glucemia SMALLINT,
     otros_signos TEXT,
     analisis TEXT,
     plan TEXT,
