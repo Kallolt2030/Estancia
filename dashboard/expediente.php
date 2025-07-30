@@ -87,36 +87,50 @@ $fecha_fin = $_GET['fecha_fin'] ?? null;
         </div>
     </aside>
 
-    <!-- Contenedor central -->
-    <section class="contenido-central">
-        <!-- Cabecera del expediente -->
-        <div class="cabecera-expediente">
-            <h2>EXPEDIENTE MÉDICO</h2>
-            <div class="info-paciente">
-                <span><strong>Paciente:</strong> <?= htmlspecialchars($nombre_paciente) ?></span>
-                <span><strong>Edad:</strong> <?= $edad_paciente ?> años</span>
+  <!-- Contenedor central -->
+<section class="contenido-central">
+    <!-- Encabezado institucional -->
+    <div class="encabezado-institucional">
+        <div class="institucion">
+            <div class="logo-titulo">
+                <img src="../assets/iconos/logo.svg" alt="Logo" class="logo-institucion">
+            </div>
+            <h1>NOTA MÉDICA MENSUAL DE ESTANCIA DE VIDA NUESTRA SEÑORA DE GUADALUPE A.C.</h1>
+            <div class="direccion">
+                <p>Estancia de Vida: SOLEDAD 207, EL LLANITO (ESTANCIA DE LUNES A VIERNES)</p>
+                <p>GERIATRIA - POR LA ATENCIÓN INTEGRAL DEL ADULTO MAYOR</p>
             </div>
         </div>
-        
-        <!-- Formulario de filtrado por fechas -->
-        <div class="filtro-fechas">
-            <form method="GET" action="">
-                <input type="hidden" name="paciente" value="<?= $id_paciente ?>">
-                <input type="hidden" name="seccion" value="<?= $seccion ?>">
-                
-                <label for="fecha_inicio">Desde:</label>
-                <input type="date" id="fecha_inicio" name="fecha_inicio" 
-                       value="<?= htmlspecialchars($fecha_inicio ?? '') ?>">
-                
-                <label for="fecha_fin">Hasta:</label>
-                <input type="date" id="fecha_fin" name="fecha_fin" 
-                       value="<?= htmlspecialchars($fecha_fin ?? '') ?>">
-                
-                <button type="submit">Filtrar</button>
-                <a href="?paciente=<?= $id_paciente ?>&seccion=<?= $seccion ?>" 
-                   class="btn-limpiar">Limpiar filtros</a>
-            </form>
+    </div>
+    
+    <!-- Cabecera del expediente -->
+    <div class="cabecera-expediente">
+        <h2>EXPEDIENTE MÉDICO</h2>
+        <div class="info-paciente">
+            <span><strong>Paciente:</strong> <?= htmlspecialchars($nombre_paciente) ?></span>
+            <span><strong>Edad:</strong> <?= $edad_paciente ?> años</span>
         </div>
+    </div>
+    
+    <!-- Formulario de filtrado por fechas -->
+    <div class="filtro-fechas">
+        <form method="GET" action="">
+            <input type="hidden" name="paciente" value="<?= $id_paciente ?>">
+            <input type="hidden" name="seccion" value="<?= $seccion ?>">
+            
+            <label for="fecha_inicio">Desde:</label>
+            <input type="date" id="fecha_inicio" name="fecha_inicio" 
+                   value="<?= htmlspecialchars($fecha_inicio ?? '') ?>">
+            
+            <label for="fecha_fin">Hasta:</label>
+            <input type="date" id="fecha_fin" name="fecha_fin" 
+                   value="<?= htmlspecialchars($fecha_fin ?? '') ?>">
+            
+            <button type="submit">Filtrar</button>
+            <a href="?paciente=<?= $id_paciente ?>&seccion=<?= $seccion ?>" 
+               class="btn-limpiar">Limpiar filtros</a>
+        </form>
+    </div>
         
         <?php
         switch ($seccion) {
@@ -147,6 +161,18 @@ $fecha_fin = $_GET['fecha_fin'] ?? null;
                 echo "<p>Seleccione una opción del menú para visualizar el contenido.</p>";
         }
         ?>
+        <!-- Al final de tu contenido, antes de cerrar el section -->
+<div class="pie-medico">
+    <div class="info-medico">
+        <p>Especial de Vida Nuestra Señora de Guadalupe A.C</p>
+        <p>Clave de R.F.C ENV</p>
+        <p>Calle Soledad 207</p>
+        <p>Colonia El Llanito C.P. 20210</p>
+        <p>Telefonos: 917 9871 Cel: (449) 8943201</p>
+        <p>estanciadevida2010@gmail.com</p>
+        
+    </div>
+</div>
     </section>
 </div>
 
@@ -167,7 +193,6 @@ function cambiarPaciente(idPaciente) {
 </script>
 
 <?php
-// Función para mostrar reportes médicos con filtrado en formato tabular
 function mostrarReportesMedicos($pdo, $id_paciente, $fecha_inicio = null, $fecha_fin = null) {
     $sql = "SELECT rm.*, m.nombre AS nombre_medico 
             FROM reportes_medicos rm
@@ -197,57 +222,110 @@ function mostrarReportesMedicos($pdo, $id_paciente, $fecha_inicio = null, $fecha
     echo '<h3>Notas Médicas</h3>';
     
     if ($reportes->rowCount() > 0) {
-        echo '<table class="tabla-expediente">';
-        echo '<thead>';
-        echo '<tr>';
-        echo '<th>Fecha</th>';
-        echo '<th>Médico</th>';
-        echo '<th>Detalles</th>';
-        echo '<th>Signos Vitales</th>';
-        echo '</tr>';
-        echo '</thead>';
-        echo '<tbody>';
-        
         foreach ($reportes as $row) {
+            echo '<div class="nota-medica">';
+            
+            // Encabezado con fecha y médico
+            echo '<div class="encabezado-nota">';
+            echo '<span class="fecha-nota">Fecha: ' . $row['fecha'] . '</span>';
+            echo '<span class="medico-nota">Médico: ' . htmlspecialchars($row['nombre_medico']) . '</span>';
+            echo '</div>';
+            
+            // Contenido en dos columnas
+            echo '<div class="contenido-nota">';
+            
+            // Columna izquierda - Detalles del paciente
+            echo '<div class="detalles-paciente">';
+            echo '<div class="campo-nota"><strong>SUEÑO:</strong> ' . nl2br(htmlspecialchars($row['sueno'] ?? 'No registrado')) . '</div>';
+            echo '<div class="campo-nota"><strong>DIETA:</strong> ' . nl2br(htmlspecialchars($row['dieta'] ?? 'No registrado')) . '</div>';
+            echo '<div class="campo-nota"><strong>ESTADO EMOCIONAL:</strong> ' . nl2br(htmlspecialchars($row['esfera_emocional'] ?? 'No registrado')) . '</div>';
+            echo '<div class="campo-nota"><strong>MEMORIA:</strong> ' . nl2br(htmlspecialchars($row['memoria'] ?? 'No registrado')) . '</div>';
+            echo '<div class="campo-nota"><strong>MICCIONES:</strong> ' . nl2br(htmlspecialchars($row['micciones'] ?? 'No registrado')) . '</div>';
+            echo '<div class="campo-nota"><strong>EVACUACIONES:</strong> ' . nl2br(htmlspecialchars($row['evacuaciones'] ?? 'No registrado')) . '</div>';
+            echo '<div class="campo-nota"><strong>ANÁLISIS:</strong> ' . nl2br(htmlspecialchars($row['analisis'] ?? 'No registrado')) . '</div>';
+            echo '<div class="campo-nota"><strong>PLAN:</strong> ' . nl2br(htmlspecialchars($row['plan'] ?? 'No registrado')) . '</div>';
+            echo '</div>';
+            
+            // Columna derecha - Signos vitales en formato vertical
+            echo '<div class="signos-vitales-vertical">';
+            echo '<h4>SIGNOS VITALES</h4>';
+            
+            echo '<table class="tabla-signos-vertical">';
+            echo '<tr><th colspan="2">Parámetro</th><th>Valor</th><th>Unidad</th></tr>';
+            
+            // Peso
             echo '<tr>';
-            echo '<td class="fecha">' . $row['fecha'] . '</td>';
-            echo '<td class="profesional">' . htmlspecialchars($row['nombre_medico']) . '</td>';
-            
-            // Detalles principales
-            echo '<td>';
-            echo '<strong>Sueño:</strong> ' . nl2br(htmlspecialchars($row['sueno'] ?? 'No registrado')) . '<br>';
-            echo '<strong>Dieta:</strong> ' . nl2br(htmlspecialchars($row['dieta'] ?? 'No registrado')) . '<br>';
-            echo '<strong>Estado emocional:</strong> ' . nl2br(htmlspecialchars($row['esfera_emocional'] ?? 'No registrado')) . '<br>';
-            echo '<strong>Memoria:</strong> ' . nl2br(htmlspecialchars($row['memoria'] ?? 'No registrado')) . '<br>';
-            echo '<strong>Micciones:</strong> ' . nl2br(htmlspecialchars($row['micciones'] ?? 'No registrado')) . '<br>';
-            echo '<strong>Evacuaciones:</strong> ' . nl2br(htmlspecialchars($row['evacuaciones'] ?? 'No registrado')) . '<br>';
-            echo '<strong>Análisis:</strong> ' . nl2br(htmlspecialchars($row['analisis'] ?? 'No registrado')) . '<br>';
-            echo '<strong>Plan:</strong> ' . nl2br(htmlspecialchars($row['plan'] ?? 'No registrado'));
-            echo '</td>';
-            
-            // Signos vitales
-            echo '<td>';
-            echo '<strong>TA:</strong> ' . $row['ta_sistolica'] . '/' . $row['ta_diastolica'] . ' mmHg<br>';
-            echo '<strong>FC:</strong> ' . $row['fc'] . ' lpm<br>';
-            echo '<strong>FR:</strong> ' . $row['fr'] . ' rpm<br>';
-            echo '<strong>Temp:</strong> ' . $row['temp'] . '°C<br>';
-            echo '<strong>SatO2:</strong> ' . $row['sat_o2'] . '%<br>';
-            echo '<strong>Peso/Talla/IMC:</strong> ' . $row['peso'] . ' kg / ' . $row['talla'] . ' cm / ' . $row['imc'] . '<br>';
-            echo '<strong>Glucemia:</strong> ' . $row['glucemia'] . ' mg/dL';
-            echo '</td>';
-            
+            echo '<td colspan="2">Peso</td>';
+            echo '<td>' . ($row['peso'] ?? '--') . '</td>';
+            echo '<td>Kg</td>';
             echo '</tr>';
+            
+            // Talla/Estatura
+            echo '<tr>';
+            echo '<td colspan="2">Estatura</td>';
+            echo '<td>' . ($row['talla'] ? ($row['talla']/100) : '--') . '</td>';
+            echo '<td>Mt</td>';
+            echo '</tr>';
+
+              // IMC (calculado si tenemos peso y talla)
+            if ($row['peso'] && $row['talla']) {
+                $imc = $row['peso'] / (($row['talla']/100) * ($row['talla']/100));
+                echo '<tr>';
+                echo '<td colspan="2">IMC</td>';
+                echo '<td>' . number_format($imc, 1) . '</td>';
+                echo '<td>kg/m²</td>';
+                echo '</tr>';
+            }
+            
+            // Frecuencia Cardíaca
+            echo '<tr>';
+            echo '<td rowspan="2">FC</td>';
+            echo '<td rowspan="2">(latidos por minuto)</td>';
+            echo '<td>' . ($row['fc'] ?? '--') . '</td>';
+            echo '<td>Lpm</td>';
+            echo '</tr>';
+            
+            // Frecuencia Respiratoria
+            echo '<tr>';
+            echo '<td>' . ($row['fr'] ?? '--') . '</td>';
+            echo '<td>rpm</td>';
+            echo '</tr>';
+            
+            // Presión Arterial
+            echo '<tr>';
+            echo '<td rowspan="2">PA</td>';
+            echo '<td rowspan="2">(milímetros de mercurio)</td>';
+            echo '<td>' . ($row['ta_sistolica'] && $row['ta_diastolica'] ? $row['ta_sistolica'].'/'.$row['ta_diastolica'] : '--') . '</td>';
+            echo '<td>mmHg</td>';
+            echo '</tr>';
+            
+            // Temperatura
+            echo '<tr>';
+            echo '<td>' . ($row['temp'] ?? '--') . '</td>';
+            echo '<td>°C</td>';
+            echo '</tr>';
+            
+            // Saturación de Oxígeno
+            echo '<tr>';
+            echo '<td rowspan="2">SpO2</td>';
+            echo '<td rowspan="2">(porcentaje de oxígeno en sangre)</td>';
+            echo '<td>' . ($row['sat_o2'] ?? '--') . '</td>';
+            echo '<td>%</td>';
+            echo '</tr>';
+            echo '</table>';
+            
+            echo '</div>'; // cierre de signos-vitales-vertical
+            echo '</div>'; // cierre de contenido-nota
+            echo '</div>'; // cierre de nota-medica
+            
+            echo '<hr class="separador-notas">';
         }
-        
-        echo '</tbody>';
-        echo '</table>';
     } else {
         echo "<p>No hay notas médicas registradas".($fecha_inicio || $fecha_fin ? " en el rango de fechas seleccionado" : "").".</p>";
     }
     
     echo '</div>';
 }
-
 // Función para mostrar reportes de enfermería con filtrado en formato tabular
 function mostrarReportesEnfermeria($pdo, $id_paciente, $fecha_inicio = null, $fecha_fin = null) {
     $sql = "SELECT re.*, u.nombre AS nombre_enfermero 
