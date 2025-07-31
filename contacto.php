@@ -4,6 +4,14 @@
 ?>
 
 <div class="background"></div>
+<style>
+  body, html {
+  height: 100%;
+  margin-top: 3%;
+  padding: 0;
+}
+
+</style>
 <div class="contenedor">
   <div class="formulario">
     <h2>¡Contáctanos!</h2>

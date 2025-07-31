@@ -95,7 +95,7 @@ error_reporting(E_ALL);
         </nav>
 
         <!-- Botón para ingresar a plataforma -->
-        <a class="platform-button" href="public/login.php">Plataforma</a>
+        <a class="platform-button" href="login.php">Plataforma</a>
 
         <!-- Menú para Teléfono y Tableta -->
         <div class="menu" id="menu" aria-label="Abrir Menú">

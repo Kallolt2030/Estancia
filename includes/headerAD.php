@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel de Administrador | Estancia de Vida</title>
+  <link rel="icon" href="/build/img/logo.svg">
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
@@ -37,11 +38,12 @@
         <div class="menu-overlay" id="menu">
           <button class="cerrar-menu" aria-label="Cerrar Menú">×</button>
           <nav class="menu-navegacion">
-            <a href="../admin/index.php">Inicio</a>
+            <a href="../admin/index.php">Inventario Cocina</a>
             <a href="../admin/registro.php">Registro</a>
             <a href="../admin/medicos.php">Médicos</a>
             <a href="../admin/expedientes.php">Expedientes</a>
             <a href="../admin/editar.php">Editar usuarios o pacientes</a>
+            <a href="../admin1/index.php">Entradas</a>
           </nav>
         </div>
       </div>
