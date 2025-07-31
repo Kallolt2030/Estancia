@@ -1,0 +1,45 @@
+.info-estancia {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem;
+  background-color: $color-black;
+  color: $color-white;
+}
+.rooms-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3rem;
+  .rooms-section-text {
+    margin: auto;
+  }
+}
+.ubication-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  background-color: $color-green-dark;
+  @include media-down($breakpoint-tablet) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .ubication-section-desc {
+    background-color: $color-white;
+    margin: 3rem;
+    padding: 3rem;
+    border-radius: .7rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+}
+.entertainment-section {
+  max-width: 90rem;
+}
+.entertainment-photos {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  img {
+    width: 50%;
+    object-fit: cover;
+  }
+}

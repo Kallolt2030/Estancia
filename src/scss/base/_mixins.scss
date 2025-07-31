@@ -1,0 +1,61 @@
+// Media Queries
+// @mixin mobile-down {
+//   @media (max-width: #{$breakpoint-phone}) {
+//     @content;
+//   }
+// }
+// @mixin tablet-down {
+//   @media (max-width: #{$breakpoint-tablet}) {
+//     @content;
+//   }
+// }
+// @mixin desktop-down {
+//   @media (max-width: #{$breakpoint-desktop}) {
+//     @content;
+//   }
+// }
+// @mixin mobile-up {
+//   @media (min-width: #{$breakpoint-phone}) {
+//     @content;
+//   }
+// }
+// @mixin tablet-up {
+//   @media (min-width: #{$breakpoint-tablet}) {
+//     @content;
+//   }
+// }
+// @mixin desktop-up {
+//   @media (min-width: #{$breakpoint-desktop}) {
+//     @content;
+//   }
+// }
+// MEDIA QUERIES
+// Menor o Igual a (max-width)
+@mixin media-down($breakpoint) {
+  @media (max-width: $breakpoint) {
+    @content;
+  }
+}
+// Mayor o igual a (min-width)
+@mixin media-up($breakpoint) {
+  @media (min-width: $breakpoint) {
+    @content;
+  }
+}
+// // Específico
+// @mixin media($device) {
+//   $value: map-get($breakpoint, $device);
+
+//   @if $value {
+//     @media(min-width: $value) and (max-width: if($device == phone, 30em, if($device == tablet, 48em, null))) {
+//       @content;
+//     }
+//   } @else {
+//     @warn "El breakpoint `#{$device}` no está definido.";
+//   }
+// }
+@mixin grid($columnas, $espaciado) {
+  display: grid;
+  gap: $espaciado;
+  grid-template-columns: repeat($columnas, 1fr);
+}

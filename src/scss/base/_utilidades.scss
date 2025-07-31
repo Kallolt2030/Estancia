@@ -1,0 +1,55 @@
+.section {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+.mt-1 {
+  margin-top: 1rem;
+}
+.mb-1 {
+  margin-bottom: 1rem;
+}
+.pt-1 {
+  padding-top: 1rem;
+}
+.pb-1 {
+  padding-bottom: 1rem;
+}
+.focused-content {
+  max-width: 80rem;
+}
+.white-background {
+  background-color: $color-white;
+}
+.dark-background {
+  background-color: $color-black;
+  color: $color-white;
+}
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.highlighted-white-text {
+  font-weight: $font-weight-black;
+  color: $color-white;
+}
+.highlighted-black-text {
+  font-weight: $font-weight-black;
+  color: $color-black;
+}
+.no-margin {
+  margin: 0;
+}
+.black-text {
+  color: $color-black;
+}
+.large-text {
+  font-size: 3rem;
+}
+.margin-title {
+  margin: 0 0 2rem 0;
+}

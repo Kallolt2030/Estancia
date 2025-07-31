@@ -1,0 +1,73 @@
+.footer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: $color-green-dark;
+  color: $color-white;
+  .footer-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    gap: 3rem;
+  }
+  .footer-sitemap {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 3rem;
+    .footer-column {
+      h3 {
+        font-size: 1.6rem;
+        margin-bottom: 2rem;
+        text-align: left;
+      }
+      ul {
+        list-style: none;
+      }
+    }
+    @include media-down($breakpoint-phone) {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  .footer-inferior {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2rem;
+    .media {
+      display: flex;
+      gap: 3rem;
+      a {
+        color: $color-white;
+      }
+    }
+    @include media-down($breakpoint-tablet) {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+  }
+}
+
+.footer-logo {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 1rem;
+  color: $color-white;
+  text-align: left;
+  img {
+    width: 3.86375rem;
+    height: 4.375rem;
+  }
+  h2 {
+    font-size: 2rem;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    font-weight: $font-weight-bold;
+  }
+  span {
+    font-size: 1.2rem;
+  }
+}

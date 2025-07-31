@@ -1,0 +1,15 @@
+.post-section {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+  max-width: 80rem;
+  margin: 0 auto;
+  @include media-down($breakpoint-tablet) {
+    max-width: 100%;
+  }
+  .post-details {
+    display: flex;
+    flex-direction: row;
+    gap: 3rem;
+  }
+}
