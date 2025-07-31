@@ -19,7 +19,8 @@ function estaAutenticado() : bool {
 
 // FUNCIÓN conectarDB
 function conectarDB() : mysqli {
-  $db = mysqli_connect('localhost', 'root', 'root', 'estancia'); // La función mysqli_connect Intenta conectarse a una base de datos con 4 distintos parámetros
+$db = mysqli_connect('localhost', 'root', '', 'estancia');
+// La función mysqli_connect Intenta conectarse a una base de datos con 4 distintos parámetros
   // Verificar si la conexión falla
   if(!$db) {
     echo "Error, no se pudo conectar";

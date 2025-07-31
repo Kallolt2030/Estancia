@@ -12,7 +12,7 @@ CREATE TABLE usuarios (
     nombre VARCHAR(100),
     correo VARCHAR(100),
     telefono VARCHAR(20),
-    rol ENUM('familiar', 'admin', 'cuidador', 'cocina', 'medico', 'enfermeria', 'kinesica') NOT NULL DEFAULT 'familiar'
+    rol ENUM('familiar', 'admin', 'cuidador', 'cocina', 'medico', 'enfermeria', 'kinesica', 'terapeuta', 'intendente') NOT NULL DEFAULT 'familiar'
 );
 
 -- 2. Tabla pacientes (depende de usuarios)
@@ -148,6 +148,15 @@ CREATE TABLE notificaciones (
     mensaje TEXT NOT NULL,
     fecha DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE posts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    image VARCHAR(255),
+    published_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
 
 CREATE TABLE reporte_kinesico (
     id_reporte INT AUTO_INCREMENT PRIMARY KEY,

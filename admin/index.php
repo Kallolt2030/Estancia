@@ -1,5 +1,4 @@
 <?php
-include '../control/auth.php';
 include '../control/control_user.php';
 include '../includes/headerAD.php';
 include '../control/bd.php';

@@ -1,21 +1,13 @@
 {
   "name": "estancia",
   "version": "1.0.0",
+  "description": "Proyecto de Estadías para Estancia de Vida",
   "main": "gulpfile.js",
   "scripts": {
     "dev": "gulp"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Kallolt2030/Estancia.git"
-  },
-  "author": "",
+  "author": "José Carlos Esparza Luna",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Kallolt2030/Estancia/issues"
-  },
-  "homepage": "https://github.com/Kallolt2030/Estancia#readme",
-  "description": "",
   "devDependencies": {
     "cssnano": "^5.1.0",
     "gulp": "^4.0.2",

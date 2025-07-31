@@ -483,7 +483,5 @@ function mostrarReportesGenerales($pdo, $id_paciente, $fecha_inicio = null, $fec
     echo '</div>';
 }
 ?>
-
-<?php include '../includes/footer.php'; ?>
 </body>
 </html>
