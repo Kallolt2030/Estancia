@@ -11,6 +11,7 @@ body {
     display: flex;
     gap: 30px;
     padding: 30px;
+    flex-wrap: wrap; /* Esto hace que el contenido se acomode mejor en pantallas pequeñas */
 }
 
 /* Menú lateral */
@@ -335,6 +336,7 @@ body {
     padding-top: 10px;
     border-top: 1px solid #ddd;
 }
+
 .logo-titulo {
     display: flex;
     align-items: center;
@@ -396,6 +398,7 @@ body {
     align-items: center;
     margin-bottom: 20px;
 }
+
 /* Estilos para el pie de página del médico */
 .pie-medico {
     margin-top: 40px;
@@ -419,3 +422,31 @@ body {
 .info-medico strong {
     color: #2c3e50;
 }
+
+/* Consultas para móviles */
+@media (max-width: 768px) {
+    .contenedor {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .menu-lateral {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .contenido-central {
+        padding: 20px;
+    }
+
+    .filtro-fechas form {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .tabla-expediente,
+    .tabla-signos-vertical {
+        font-size: 0.8em;
+    }
+}
+
